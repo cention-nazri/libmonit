@@ -11,20 +11,8 @@
 		522FF2FA192E702D00C62A13 /* TimeTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8613A5212700FC4089 /* TimeTest.c */; };
 		523FFE7619AFE7610018595D /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DDC12013C59D45003AA75C /* libmonit.a */; };
 		523FFE7C19AFE7B30018595D /* StrTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8313A5212700FC4089 /* StrTest.c */; };
-		52936F8813A5212700FC4089 /* CommandTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F7713A5212700FC4089 /* CommandTest.c */; };
-		52936F8913A5212700FC4089 /* DirTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F7A13A5212700FC4089 /* DirTest.c */; };
-		52936F8A13A5212700FC4089 /* ExceptionTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F7B13A5212700FC4089 /* ExceptionTest.c */; };
-		52936F8B13A5212700FC4089 /* FileTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F7C13A5212700FC4089 /* FileTest.c */; };
-		52936F8C13A5212700FC4089 /* InputStreamTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F7D13A5212700FC4089 /* InputStreamTest.c */; };
-		52936F8D13A5212700FC4089 /* ListTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F7E13A5212700FC4089 /* ListTest.c */; };
-		52936F8E13A5212700FC4089 /* NetTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8013A5212700FC4089 /* NetTest.c */; };
-		52936F8F13A5212700FC4089 /* OutputStreamTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8113A5212700FC4089 /* OutputStreamTest.c */; };
-		52936F9013A5212700FC4089 /* StringBufferTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8213A5212700FC4089 /* StringBufferTest.c */; };
-		52936F9113A5212700FC4089 /* StrTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8313A5212700FC4089 /* StrTest.c */; };
-		52936F9213A5212700FC4089 /* SystemTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8413A5212700FC4089 /* SystemTest.c */; };
-		52936F9313A5212700FC4089 /* TimeTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8613A5212700FC4089 /* TimeTest.c */; };
-		52A710B9196C920800379D67 /* NetStatistics.c in Sources */ = {isa = PBXBuildFile; fileRef = 52A710B7196C920800379D67 /* NetStatistics.c */; };
-		52A710BA196C920800379D67 /* NetStatistics.h in Headers */ = {isa = PBXBuildFile; fileRef = 52A710B8196C920800379D67 /* NetStatistics.h */; };
+		52A710B9196C920800379D67 /* Link.c in Sources */ = {isa = PBXBuildFile; fileRef = 52A710B7196C920800379D67 /* Link.c */; };
+		52A710BA196C920800379D67 /* Link.h in Headers */ = {isa = PBXBuildFile; fileRef = 52A710B8196C920800379D67 /* Link.h */; };
 		52D7967E13A6CE560014CED2 /* Bootstrap.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7964A13A6CE560014CED2 /* Bootstrap.c */; };
 		52D7968113A6CE560014CED2 /* assert.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7964F13A6CE560014CED2 /* assert.c */; };
 		52D7968413A6CE560014CED2 /* Exception.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7965213A6CE560014CED2 /* Exception.c */; };
@@ -77,8 +65,15 @@
 
 /* Begin PBXFileReference section */
 		522539AC18B91092003EB002 /* THIRDPARTY */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = THIRDPARTY; sourceTree = "<group>"; };
-		522FF2F9192E700200C62A13 /* TimeTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TimeTest; sourceTree = BUILT_PRODUCTS_DIR; };
-		523FFE7B19AFE7610018595D /* StrTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StrTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		522FF2F9192E700200C62A13 /* TimeTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = TimeTest; path = /Users/hauk/src/libmonit/build/Debug/TimeTest; sourceTree = "<absolute>"; };
+		5239CECF1A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
+		5239CED11A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
+		5239CED31A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
+		5239CED51A59E0C500A032B8 /* Linke.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Linke.inc; sourceTree = "<group>"; };
+		5239CED71A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
+		5239CED91A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
+		5239CEDB1A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
+		523FFE7B19AFE7610018595D /* StrTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = StrTest; path = /Users/hauk/src/libmonit/build/Debug/StrTest; sourceTree = "<absolute>"; };
 		5274580B13A1009C00C422FE /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		5274580C13A1009C00C422FE /* configure.ac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = configure.ac; sourceTree = "<group>"; };
 		5274580D13A1009C00C422FE /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
@@ -99,8 +94,8 @@
 		52936F8513A5212700FC4089 /* test.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
 		52936F8613A5212700FC4089 /* TimeTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TimeTest.c; sourceTree = "<group>"; };
 		52936F9913A5216B00FC4089 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = COPYING; sourceTree = "<group>"; };
-		52A710B7196C920800379D67 /* NetStatistics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = NetStatistics.c; sourceTree = "<group>"; };
-		52A710B8196C920800379D67 /* NetStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetStatistics.h; sourceTree = "<group>"; };
+		52A710B7196C920800379D67 /* Link.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Link.c; sourceTree = "<group>"; };
+		52A710B8196C920800379D67 /* Link.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Link.h; sourceTree = "<group>"; };
 		52D7964A13A6CE560014CED2 /* Bootstrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Bootstrap.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52D7964B13A6CE560014CED2 /* Bootstrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Bootstrap.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52D7964C13A6CE560014CED2 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Config.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -140,7 +135,7 @@
 		52D7967A13A6CE560014CED2 /* StringBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = StringBuffer.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52D7967B13A6CE560014CED2 /* StringBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = StringBuffer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52DDC12013C59D45003AA75C /* libmonit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmonit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		52FDD6A8189C2036008E3D5E /* CommandTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CommandTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		52FDD6A8189C2036008E3D5E /* CommandTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = CommandTest; path = /Users/hauk/src/libmonit/build/Debug/CommandTest; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +173,76 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5239CECD1A59E0C500A032B8 /* os */ = {
+			isa = PBXGroup;
+			children = (
+				5239CECE1A59E0C500A032B8 /* aix */,
+				5239CED01A59E0C500A032B8 /* freebsd */,
+				5239CED21A59E0C500A032B8 /* linux */,
+				5239CED41A59E0C500A032B8 /* macosx */,
+				5239CED61A59E0C500A032B8 /* netbsd */,
+				5239CED81A59E0C500A032B8 /* openbsd */,
+				5239CEDA1A59E0C500A032B8 /* solaris */,
+			);
+			path = os;
+			sourceTree = "<group>";
+		};
+		5239CECE1A59E0C500A032B8 /* aix */ = {
+			isa = PBXGroup;
+			children = (
+				5239CECF1A59E0C500A032B8 /* Link.inc */,
+			);
+			path = aix;
+			sourceTree = "<group>";
+		};
+		5239CED01A59E0C500A032B8 /* freebsd */ = {
+			isa = PBXGroup;
+			children = (
+				5239CED11A59E0C500A032B8 /* Link.inc */,
+			);
+			path = freebsd;
+			sourceTree = "<group>";
+		};
+		5239CED21A59E0C500A032B8 /* linux */ = {
+			isa = PBXGroup;
+			children = (
+				5239CED31A59E0C500A032B8 /* Link.inc */,
+			);
+			path = linux;
+			sourceTree = "<group>";
+		};
+		5239CED41A59E0C500A032B8 /* macosx */ = {
+			isa = PBXGroup;
+			children = (
+				5239CED51A59E0C500A032B8 /* Linke.inc */,
+			);
+			path = macosx;
+			sourceTree = "<group>";
+		};
+		5239CED61A59E0C500A032B8 /* netbsd */ = {
+			isa = PBXGroup;
+			children = (
+				5239CED71A59E0C500A032B8 /* Link.inc */,
+			);
+			path = netbsd;
+			sourceTree = "<group>";
+		};
+		5239CED81A59E0C500A032B8 /* openbsd */ = {
+			isa = PBXGroup;
+			children = (
+				5239CED91A59E0C500A032B8 /* Link.inc */,
+			);
+			path = openbsd;
+			sourceTree = "<group>";
+		};
+		5239CEDA1A59E0C500A032B8 /* solaris */ = {
+			isa = PBXGroup;
+			children = (
+				5239CEDB1A59E0C500A032B8 /* Link.inc */,
+			);
+			path = solaris;
+			sourceTree = "<group>";
+		};
 		5274583A13A1009C00C422FE /* test */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,9 +301,6 @@
 				5274583A13A1009C00C422FE /* test */,
 				52936F9513A5216B00FC4089 /* config */,
 				527BC1F2140776E700D9D3F0 /* Products */,
-				52FDD6A8189C2036008E3D5E /* CommandTest */,
-				522FF2F9192E700200C62A13 /* TimeTest */,
-				523FFE7B19AFE7610018595D /* StrTest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -290,8 +352,9 @@
 		52D7966213A6CE560014CED2 /* system */ = {
 			isa = PBXGroup;
 			children = (
-				52A710B7196C920800379D67 /* NetStatistics.c */,
-				52A710B8196C920800379D67 /* NetStatistics.h */,
+				5239CECD1A59E0C500A032B8 /* os */,
+				52A710B7196C920800379D67 /* Link.c */,
+				52A710B8196C920800379D67 /* Link.h */,
 				52D7966413A6CE560014CED2 /* Command.c */,
 				52D7966513A6CE560014CED2 /* Command.h */,
 				52D7966A13A6CE560014CED2 /* Process.h */,
@@ -336,7 +399,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52A710BA196C920800379D67 /* NetStatistics.h in Headers */,
+				52A710BA196C920800379D67 /* Link.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,19 +524,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52936F8813A5212700FC4089 /* CommandTest.c in Sources */,
-				52936F8913A5212700FC4089 /* DirTest.c in Sources */,
-				52936F8A13A5212700FC4089 /* ExceptionTest.c in Sources */,
-				52936F8B13A5212700FC4089 /* FileTest.c in Sources */,
-				52936F8C13A5212700FC4089 /* InputStreamTest.c in Sources */,
-				52936F8D13A5212700FC4089 /* ListTest.c in Sources */,
-				52A710B9196C920800379D67 /* NetStatistics.c in Sources */,
-				52936F8E13A5212700FC4089 /* NetTest.c in Sources */,
-				52936F8F13A5212700FC4089 /* OutputStreamTest.c in Sources */,
-				52936F9013A5212700FC4089 /* StringBufferTest.c in Sources */,
-				52936F9113A5212700FC4089 /* StrTest.c in Sources */,
-				52936F9213A5212700FC4089 /* SystemTest.c in Sources */,
-				52936F9313A5212700FC4089 /* TimeTest.c in Sources */,
 				52D7967E13A6CE560014CED2 /* Bootstrap.c in Sources */,
 				52D7968113A6CE560014CED2 /* assert.c in Sources */,
 				52D7968413A6CE560014CED2 /* Exception.c in Sources */,
@@ -484,6 +534,7 @@
 				52D7969113A6CE560014CED2 /* Command.c in Sources */,
 				52D7969313A6CE560014CED2 /* Mem.c in Sources */,
 				52D7969513A6CE560014CED2 /* Net.c in Sources */,
+				52A710B9196C920800379D67 /* Link.c in Sources */,
 				52D7969813A6CE560014CED2 /* System.c in Sources */,
 				52D7969A13A6CE560014CED2 /* Time.c in Sources */,
 				52D7969D13A6CE560014CED2 /* Thread.c in Sources */,

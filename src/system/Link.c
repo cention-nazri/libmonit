@@ -51,7 +51,7 @@
 #include <libperfstat.h>
 #endif
 
-#include "system/NetStatistics.h"
+#include "system/Link.h"
 #include "system/Time.h"
 #include "system/System.h"
 #include "Str.h"
@@ -69,7 +69,7 @@
 /* ------------------------------------------------------------- Definitions */
 
 
-#define T NetStatistics_T
+#define T Link_T
 
 
 static struct {
@@ -88,17 +88,14 @@ typedef struct NetStatisticsData_T {
 
 struct T {
         char *object;
-        const char *(*resolve)(const char *object); // Resolve Object -> Interface, set during NetStatistics_T instantiation by constructor (currently we implement only IPAddress -> Interface lookup)
-
+        const char *(*resolve)(const char *object); // Resolve Object -> Interface, set during Link_T instantiation by constructor (currently we implement only IPAddress -> Interface lookup)
         struct {
                 long long last;
                 long long now;
         } timestamp;
-
         int state;       // State (0 = down, 1 = up)
         int duplex;      // Duplex (0 = half, 1 = full)
         long long speed; // Speed [bps]
-
         NetStatisticsData_T ipackets;  // Packets received on interface
         NetStatisticsData_T ierrors;   // Input errors on interface
         NetStatisticsData_T ibytes;    // Total number of octets received
@@ -123,19 +120,19 @@ static void __attribute__ ((destructor)) _destructor() {
 
 
 #if defined DARWIN
-#include "os/macosx/NetStatistics.c"
+#include "os/macosx/Link.inc"
 #elif defined FREEBSD
-#include "os/freebsd/NetStatistics.c"
+#include "os/freebsd/Link.inc"
 #elif defined OPENBSD
-#include "os/openbsd/NetStatistics.c"
+#include "os/openbsd/Link.inc"
 #elif defined NETBSD
-#include "os/netbsd/NetStatistics.c"
+#include "os/netbsd/Link.inc"
 #elif defined LINUX
-#include "os/linux/NetStatistics.c"
+#include "os/linux/Link.inc"
 #elif defined SOLARIS
-#include "os/solaris/NetStatistics.c"
+#include "os/solaris/Link.inc"
 #elif defined AIX
-#include "os/aix/NetStatistics.c"
+#include "os/aix/Link.inc"
 #endif
 
 
@@ -147,43 +144,43 @@ static void _resetData(NetStatisticsData_T *data, long long value) {
 }
 
 
-static void _reset(T S) {
-        S->timestamp.last = 0LL;
-        S->timestamp.now = 0LL;
-        S->state = -1;
-        S->duplex = -1;
-        S->speed = 0LL;
-        _resetData(&(S->ibytes), -1LL);
-        _resetData(&(S->ipackets), -1LL);
-        _resetData(&(S->ierrors), -1LL);
-        _resetData(&(S->obytes), -1LL);
-        _resetData(&(S->opackets), -1LL);
-        _resetData(&(S->oerrors), -1LL);
+static void _reset(T L) {
+        L->timestamp.last = 0LL;
+        L->timestamp.now = 0LL;
+        L->state = -1;
+        L->duplex = -1;
+        L->speed = 0LL;
+        _resetData(&(L->ibytes), -1LL);
+        _resetData(&(L->ipackets), -1LL);
+        _resetData(&(L->ierrors), -1LL);
+        _resetData(&(L->obytes), -1LL);
+        _resetData(&(L->opackets), -1LL);
+        _resetData(&(L->oerrors), -1LL);
 }
 
 
-static long long _deltaSecond(T S, NetStatisticsData_T *data) {
-        if (S->timestamp.last > 0 && S->timestamp.now > S->timestamp.last)
+static long long _deltaSecond(T L, NetStatisticsData_T *data) {
+        if (L->timestamp.last > 0 && L->timestamp.now > L->timestamp.last)
                 if (data->last > -1 && data->now > data->last)
-                        return (long long)((data->now - data->last) * 1000. / (S->timestamp.now - S->timestamp.last));
+                        return (long long)((data->now - data->last) * 1000. / (L->timestamp.now - L->timestamp.last));
         return 0LL;
 }
 
 
-static long long _deltaMinute(T S, NetStatisticsData_T *data, int count) {
+static long long _deltaMinute(T L, NetStatisticsData_T *data, int count) {
         assert(count > 0);
         assert(count <= 60);
-        int stop = Time_minutes(S->timestamp.now / 1000.);
+        int stop = Time_minutes(L->timestamp.now / 1000.);
         int delta = stop - count;
         int start = delta < 0 ? 60 + delta + 1 : delta;
         return data->minute[start] > -1LL ? data->minute[stop] - data->minute[start] : 0LL;
 }
 
 
-static long long _deltaHour(T S, NetStatisticsData_T *data, int count) {
+static long long _deltaHour(T L, NetStatisticsData_T *data, int count) {
         assert(count > 0);
         assert(count <= 24);
-        int stop = Time_hour(S->timestamp.now / 1000.);
+        int stop = Time_hour(L->timestamp.now / 1000.);
         int delta = stop - count;
         int start = delta < 0 ? 24 + delta + 1 : delta;
         return data->hour[start] > -1LL ? data->hour[stop] - data->hour[start] : 0LL;
@@ -221,26 +218,26 @@ static const char *_returnInterface(const char *interface) {
 }
 
 
-static void _updateHistory(T S) {
-        time_t now = S->timestamp.now / 1000.;
+static void _updateHistory(T L) {
+        time_t now = L->timestamp.now / 1000.;
         int minute = Time_minutes(now);
         int hour =  Time_hour(now);
-        if (S->timestamp.last == 0LL) {
+        if (L->timestamp.last == 0LL) {
                 // Initialize the history on first update, so we can start accounting for total data immediately. Any delta will show difference between the very first value and then given point in time, until regular update cycle
-                _resetData(&(S->ibytes), S->ibytes.now);
-                _resetData(&(S->ipackets), S->ipackets.now);
-                _resetData(&(S->ierrors), S->ierrors.now);
-                _resetData(&(S->obytes), S->obytes.now);
-                _resetData(&(S->opackets), S->opackets.now);
-                _resetData(&(S->oerrors), S->oerrors.now);
+                _resetData(&(L->ibytes), L->ibytes.now);
+                _resetData(&(L->ipackets), L->ipackets.now);
+                _resetData(&(L->ierrors), L->ierrors.now);
+                _resetData(&(L->obytes), L->obytes.now);
+                _resetData(&(L->opackets), L->opackets.now);
+                _resetData(&(L->oerrors), L->oerrors.now);
         } else {
                 // Update relative values only
-                S->ibytes.minute[minute] = S->ibytes.hour[hour] = S->ibytes.now;
-                S->ipackets.minute[minute] = S->ipackets.hour[hour] = S->ipackets.now;
-                S->ierrors.minute[minute] = S->ierrors.hour[hour] = S->ierrors.now;
-                S->obytes.minute[minute] = S->obytes.hour[hour] = S->obytes.now;
-                S->opackets.minute[minute] = S->opackets.hour[hour] = S->opackets.now;
-                S->oerrors.minute[minute] = S->oerrors.hour[hour] = S->oerrors.now;
+                L->ibytes.minute[minute] = L->ibytes.hour[hour] = L->ibytes.now;
+                L->ipackets.minute[minute] = L->ipackets.hour[hour] = L->ipackets.now;
+                L->ierrors.minute[minute] = L->ierrors.hour[hour] = L->ierrors.now;
+                L->obytes.minute[minute] = L->obytes.hour[hour] = L->obytes.now;
+                L->opackets.minute[minute] = L->opackets.hour[hour] = L->opackets.now;
+                L->oerrors.minute[minute] = L->oerrors.hour[hour] = L->oerrors.now;
         }
 }
 
@@ -266,40 +263,40 @@ static void _updateCache() {
 /* ---------------------------------------------------------------- Public */
 
 
-T NetStatistics_createForAddress(const char *address) {
+T Link_createForAddress(const char *address) {
         assert(address);
-        T S;
-        NEW(S);
-        _reset(S);
-        S->object = Str_dup(address);
-        S->resolve = _findInterfaceForAddress;
-        return S;
+        T L;
+        NEW(L);
+        _reset(L);
+        L->object = Str_dup(address);
+        L->resolve = _findInterfaceForAddress;
+        return L;
 }
 
 
-T NetStatistics_createForInterface(const char *interface) {
+T Link_createForInterface(const char *interface) {
         assert(interface);
-        T S;
-        NEW(S);
-        _reset(S);
-        S->object = Str_dup(interface);
-        S->resolve = _returnInterface;
-        return S;
+        T L;
+        NEW(L);
+        _reset(L);
+        L->object = Str_dup(interface);
+        L->resolve = _returnInterface;
+        return L;
 }
 
 
-void NetStatistics_free(T *S) {
-        FREE((*S)->object);
-        FREE(*S);
+void Link_free(T *L) {
+        FREE((*L)->object);
+        FREE(*L);
 }
 
 
-void NetStatistics_reset(T S) {
-        _reset(S);
+void Link_reset(T L) {
+        _reset(L);
 }
 
 
-int NetStatistics_isGetByAddressSupported() {
+int Link_isGetByAddressSupported() {
 #ifdef HAVE_IFADDRS_H
         return true;
 #else
@@ -308,184 +305,186 @@ int NetStatistics_isGetByAddressSupported() {
 }
 
 
-void NetStatistics_update(T S) {
+void Link_update(T L) {
         _updateCache();
-        const char *interface = S->resolve(S->object);
-        if (_update(S, interface))
-                _updateHistory(S);
+        const char *interface = L->resolve(L->object);
+        if (_update(L, interface))
+                _updateHistory(L);
         else
                 THROW(AssertException, "Cannot udate network statistics -- interface %s not found", interface);
 }
 
 
-long long NetStatistics_getBytesInPerSecond(T S) {
-        assert(S);
-        return _deltaSecond(S, &(S->ibytes));
+long long Link_getBytesInPerSecond(T L) {
+        assert(L);
+        return _deltaSecond(L, &(L->ibytes));
 }
 
 
-long long NetStatistics_getBytesInPerMinute(T S, int count) {
-        assert(S);
-        return _deltaMinute(S, &(S->ibytes), count);
+long long Link_getBytesInPerMinute(T L, int count) {
+        assert(L);
+        return _deltaMinute(L, &(L->ibytes), count);
 }
 
 
-long long NetStatistics_getBytesInPerHour(T S, int count) {
-        assert(S);
-        return _deltaHour(S, &(S->ibytes), count);
+long long Link_getBytesInPerHour(T L, int count) {
+        assert(L);
+        return _deltaHour(L, &(L->ibytes), count);
 }
 
 
-long long NetStatistics_getBytesInTotal(T S) {
-        assert(S);
-        return S->ibytes.now;
+long long Link_getBytesInTotal(T L) {
+        assert(L);
+        return L->ibytes.now;
 }
 
 
-double NetStatistics_getSaturationInPerSecond(T S) {
-        return S->speed ? (double)NetStatistics_getBytesInPerSecond(S) * 8. * 100. / S->speed : -1.;
+double Link_getSaturationInPerSecond(T L) {
+        assert(L);
+        return L->speed ? (double)Link_getBytesInPerSecond(L) * 8. * 100. / L->speed : -1.;
 }
 
 
-long long NetStatistics_getPacketsInPerSecond(T S) {
-        assert(S);
-        return _deltaSecond(S, &(S->ipackets));
+long long Link_getPacketsInPerSecond(T L) {
+        assert(L);
+        return _deltaSecond(L, &(L->ipackets));
 }
 
 
-long long NetStatistics_getPacketsInPerMinute(T S, int count) {
-        assert(S);
-        return _deltaMinute(S, &(S->ipackets), count);
+long long Link_getPacketsInPerMinute(T L, int count) {
+        assert(L);
+        return _deltaMinute(L, &(L->ipackets), count);
 }
 
 
-long long NetStatistics_getPacketsInPerHour(T S, int count) {
-        assert(S);
-        return _deltaHour(S, &(S->ipackets), count);
+long long Link_getPacketsInPerHour(T L, int count) {
+        assert(L);
+        return _deltaHour(L, &(L->ipackets), count);
 }
 
 
-long long NetStatistics_getPacketsInTotal(T S) {
-        assert(S);
-        return S->ipackets.now;
+long long Link_getPacketsInTotal(T L) {
+        assert(L);
+        return L->ipackets.now;
 }
 
 
-long long NetStatistics_getErrorsInPerSecond(T S) {
-        assert(S);
-        return _deltaSecond(S, &(S->ierrors));
+long long Link_getErrorsInPerSecond(T L) {
+        assert(L);
+        return _deltaSecond(L, &(L->ierrors));
 }
 
 
-long long NetStatistics_getErrorsInPerMinute(T S, int count) {
-        assert(S);
-        return _deltaMinute(S, &(S->ierrors), count);
+long long Link_getErrorsInPerMinute(T L, int count) {
+        assert(L);
+        return _deltaMinute(L, &(L->ierrors), count);
 }
 
 
-long long NetStatistics_getErrorsInPerHour(T S, int count) {
-        assert(S);
-        return _deltaHour(S, &(S->ierrors), count);
+long long Link_getErrorsInPerHour(T L, int count) {
+        assert(L);
+        return _deltaHour(L, &(L->ierrors), count);
 }
 
 
-long long NetStatistics_getErrorsInTotal(T S) {
-        assert(S);
-        return S->ierrors.now;
+long long Link_getErrorsInTotal(T L) {
+        assert(L);
+        return L->ierrors.now;
 }
 
 
-long long NetStatistics_getBytesOutPerSecond(T S) {
-        assert(S);
-        return _deltaSecond(S, &(S->obytes));
+long long Link_getBytesOutPerSecond(T L) {
+        assert(L);
+        return _deltaSecond(L, &(L->obytes));
 }
 
 
-long long NetStatistics_getBytesOutPerMinute(T S, int count) {
-        assert(S);
-        return _deltaMinute(S, &(S->obytes), count);
+long long Link_getBytesOutPerMinute(T L, int count) {
+        assert(L);
+        return _deltaMinute(L, &(L->obytes), count);
 }
 
 
-long long NetStatistics_getBytesOutPerHour(T S, int count) {
-        assert(S);
-        return _deltaHour(S, &(S->obytes), count);
+long long Link_getBytesOutPerHour(T L, int count) {
+        assert(L);
+        return _deltaHour(L, &(L->obytes), count);
 }
 
 
-long long NetStatistics_getBytesOutTotal(T S) {
-        assert(S);
-        return S->obytes.now;
+long long Link_getBytesOutTotal(T L) {
+        assert(L);
+        return L->obytes.now;
 }
 
 
-double NetStatistics_getSaturationOutPerSecond(T S) {
-        return S->speed ? (double)NetStatistics_getBytesOutPerSecond(S) * 8. * 100. / S->speed : -1.;
+double Link_getSaturationOutPerSecond(T L) {
+        assert(L);
+        return L->speed ? (double)Link_getBytesOutPerSecond(L) * 8. * 100. / L->speed : -1.;
 }
 
 
-long long NetStatistics_getPacketsOutPerSecond(T S) {
-        assert(S);
-        return _deltaSecond(S, &(S->opackets));
+long long Link_getPacketsOutPerSecond(T L) {
+        assert(L);
+        return _deltaSecond(L, &(L->opackets));
 }
 
 
-long long NetStatistics_getPacketsOutPerMinute(T S, int count) {
-        assert(S);
-        return _deltaMinute(S, &(S->opackets), count);
+long long Link_getPacketsOutPerMinute(T L, int count) {
+        assert(L);
+        return _deltaMinute(L, &(L->opackets), count);
 }
 
 
-long long NetStatistics_getPacketsOutPerHour(T S, int count) {
-        assert(S);
-        return _deltaHour(S, &(S->opackets), count);
+long long Link_getPacketsOutPerHour(T L, int count) {
+        assert(L);
+        return _deltaHour(L, &(L->opackets), count);
 }
 
 
-long long NetStatistics_getPacketsOutTotal(T S) {
-        assert(S);
-        return S->opackets.now;
+long long Link_getPacketsOutTotal(T L) {
+        assert(L);
+        return L->opackets.now;
 }
 
 
-long long NetStatistics_getErrorsOutPerSecond(T S) {
-        assert(S);
-        return _deltaSecond(S, &(S->oerrors));
+long long Link_getErrorsOutPerSecond(T L) {
+        assert(L);
+        return _deltaSecond(L, &(L->oerrors));
 }
 
 
-long long NetStatistics_getErrorsOutPerMinute(T S, int count) {
-        assert(S);
-        return _deltaMinute(S, &(S->oerrors), count);
+long long Link_getErrorsOutPerMinute(T L, int count) {
+        assert(L);
+        return _deltaMinute(L, &(L->oerrors), count);
 }
 
 
-long long NetStatistics_getErrorsOutPerHour(T S, int count) {
-        assert(S);
-        return _deltaHour(S, &(S->oerrors), count);
+long long Link_getErrorsOutPerHour(T L, int count) {
+        assert(L);
+        return _deltaHour(L, &(L->oerrors), count);
 }
 
 
-long long NetStatistics_getErrorsOutTotal(T S) {
-        assert(S);
-        return S->oerrors.now;
+long long Link_getErrorsOutTotal(T L) {
+        assert(L);
+        return L->oerrors.now;
 }
 
 
-int NetStatistics_getState(T S) {
-        assert(S);
-        return S->state;
+int Link_getState(T L) {
+        assert(L);
+        return L->state;
 }
 
 
-long long NetStatistics_getSpeed(T S) {
-        assert(S);
-        return S->speed;
+long long Link_getSpeed(T L) {
+        assert(L);
+        return L->speed;
 }
 
 
-int NetStatistics_getDuplex(T S) {
-        assert(S);
-        return S->duplex;
+int Link_getDuplex(T L) {
+        assert(L);
+        return L->duplex;
 }
 

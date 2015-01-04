@@ -32,28 +32,28 @@
  */
 
 
-static boolean_t _update(T S, const char *interface) {
+static boolean_t _update(T L, const char *interface) {
         perfstat_id_t id;
         perfstat_netinterface_t buf;
         snprintf(id.name, sizeof(id.name), interface);
         if (perfstat_netinterface(&id, &buf, sizeof(buf), 1) != 1)
                 THROW(AssertException, "Cannot get perfstat data for %s -- %s", interface, System_getError(errno));
-        S->ipackets.last = S->ipackets.now;
-        S->ibytes.last = S->ibytes.now;
-        S->ierrors.last = S->ierrors.now;
-        S->opackets.last = S->opackets.now;
-        S->obytes.last = S->obytes.now;
-        S->oerrors.last = S->oerrors.now;
-        S->speed = buf.bitrate;
-        S->ipackets.now = buf.ipackets;
-        S->ibytes.now = buf.ibytes;
-        S->ierrors.now = buf.ierrors;
-        S->opackets.now = buf.opackets;
-        S->obytes.now = buf.obytes;
-        S->oerrors.now = buf.oerrors;
-        S->timestamp.last = S->timestamp.now;
-        S->timestamp.now = Time_milli();
-        //FIXME: S->state and S->duplex are not implemented
+        L->ipackets.last = L->ipackets.now;
+        L->ibytes.last = L->ibytes.now;
+        L->ierrors.last = L->ierrors.now;
+        L->opackets.last = L->opackets.now;
+        L->obytes.last = L->obytes.now;
+        L->oerrors.last = L->oerrors.now;
+        L->speed = buf.bitrate;
+        L->ipackets.now = buf.ipackets;
+        L->ibytes.now = buf.ibytes;
+        L->ierrors.now = buf.ierrors;
+        L->opackets.now = buf.opackets;
+        L->obytes.now = buf.obytes;
+        L->oerrors.now = buf.oerrors;
+        L->timestamp.last = L->timestamp.now;
+        L->timestamp.now = Time_milli();
+        //FIXME: L->state and L->duplex are not implemented
         return true;
 }
 

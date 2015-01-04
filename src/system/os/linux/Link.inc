@@ -32,7 +32,7 @@
  */
 
 
-static boolean_t _update(T S, const char *interface) {
+static boolean_t _update(T L, const char *interface) {
         char buf[STRLEN];
         char path[PATH_MAX];
         /*
@@ -44,7 +44,7 @@ static boolean_t _update(T S, const char *interface) {
         FILE *f = fopen(path, "r");
         if (f) {
                 if (fscanf(f, "%256s\n", buf) == 1) {
-                        S->state = Str_isEqual(buf, "down") ? 0LL : 1LL;
+                        L->state = Str_isEqual(buf, "down") ? 0LL : 1LL;
                 }
                 fclose(f);
         }
@@ -58,7 +58,7 @@ static boolean_t _update(T S, const char *interface) {
         if (f) {
                 int speed;
                 if (fscanf(f, "%d\n", &speed) == 1) {
-                        S->speed = speed * 1000000; // mbps -> bps
+                        L->speed = speed * 1000000; // mbps -> bps
                 }
                 fclose(f);
         }
@@ -71,7 +71,7 @@ static boolean_t _update(T S, const char *interface) {
         f = fopen(path, "r");
         if (f) {
                 if (fscanf(f, "%256s\n", buf) == 1) {
-                        S->duplex = Str_isEqual(buf, "full") ? 1LL : 0LL;
+                        L->duplex = Str_isEqual(buf, "full") ? 1LL : 0LL;
                 }
                 fclose(f);
         }
@@ -88,20 +88,20 @@ static boolean_t _update(T S, const char *interface) {
                 while (fgets(buf, sizeof(buf), f) != NULL) {
                         char iface[STRLEN];
                         if (sscanf(buf, "%256[^:]: %lld %lld %lld %*s %*s %*s %*s %*s %lld %lld %lld %*s %*s %*s %*s %*s", iface, &ibytes, &ipackets, &ierrors, &obytes, &opackets, &oerrors) == 7 && Str_isEqual(Str_trim(iface), interface)) {
-                                S->timestamp.last = S->timestamp.now;
-                                S->timestamp.now = Time_milli();
-                                S->ipackets.last = S->ipackets.now;
-                                S->ipackets.now = ipackets;
-                                S->ibytes.last = S->ibytes.now;
-                                S->ibytes.now = ibytes;
-                                S->ierrors.last = S->ierrors.now;
-                                S->ierrors.now = ierrors;
-                                S->opackets.last = S->opackets.now;
-                                S->opackets.now = opackets;
-                                S->obytes.last = S->obytes.now;
-                                S->obytes.now = obytes;
-                                S->oerrors.last = S->oerrors.now;
-                                S->oerrors.now = oerrors;
+                                L->timestamp.last = L->timestamp.now;
+                                L->timestamp.now = Time_milli();
+                                L->ipackets.last = L->ipackets.now;
+                                L->ipackets.now = ipackets;
+                                L->ibytes.last = L->ibytes.now;
+                                L->ibytes.now = ibytes;
+                                L->ierrors.last = L->ierrors.now;
+                                L->ierrors.now = ierrors;
+                                L->opackets.last = L->opackets.now;
+                                L->opackets.now = opackets;
+                                L->obytes.last = L->obytes.now;
+                                L->obytes.now = obytes;
+                                L->oerrors.last = L->oerrors.now;
+                                L->oerrors.now = oerrors;
                                 fclose(f);
                                 return true;
                         }
