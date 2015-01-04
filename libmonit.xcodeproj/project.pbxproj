@@ -69,10 +69,11 @@
 		5239CECF1A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CED11A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CED31A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
-		5239CED51A59E0C500A032B8 /* Linke.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Linke.inc; sourceTree = "<group>"; };
+		5239CED51A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CED71A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CED91A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CEDB1A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
+		5239CEE31A59E9E800A032B8 /* LinkTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LinkTest.c; sourceTree = "<group>"; };
 		523FFE7B19AFE7610018595D /* StrTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = StrTest; path = /Users/hauk/src/libmonit/build/Debug/StrTest; sourceTree = "<absolute>"; };
 		5274580B13A1009C00C422FE /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		5274580C13A1009C00C422FE /* configure.ac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = configure.ac; sourceTree = "<group>"; };
@@ -214,7 +215,7 @@
 		5239CED41A59E0C500A032B8 /* macosx */ = {
 			isa = PBXGroup;
 			children = (
-				5239CED51A59E0C500A032B8 /* Linke.inc */,
+				5239CED51A59E0C500A032B8 /* Link.inc */,
 			);
 			path = macosx;
 			sourceTree = "<group>";
@@ -256,6 +257,7 @@
 				52936F7D13A5212700FC4089 /* InputStreamTest.c */,
 				52936F7E13A5212700FC4089 /* ListTest.c */,
 				52936F8013A5212700FC4089 /* NetTest.c */,
+				5239CEE31A59E9E800A032B8 /* LinkTest.c */,
 				52936F8113A5212700FC4089 /* OutputStreamTest.c */,
 				52936F8213A5212700FC4089 /* StringBufferTest.c */,
 				52936F8313A5212700FC4089 /* StrTest.c */,
