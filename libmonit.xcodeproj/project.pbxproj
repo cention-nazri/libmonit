@@ -12,7 +12,6 @@
 		523FFE7619AFE7610018595D /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DDC12013C59D45003AA75C /* libmonit.a */; };
 		523FFE7C19AFE7B30018595D /* StrTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8313A5212700FC4089 /* StrTest.c */; };
 		52A710B9196C920800379D67 /* Link.c in Sources */ = {isa = PBXBuildFile; fileRef = 52A710B7196C920800379D67 /* Link.c */; };
-		52A710BA196C920800379D67 /* Link.h in Headers */ = {isa = PBXBuildFile; fileRef = 52A710B8196C920800379D67 /* Link.h */; };
 		52D7967E13A6CE560014CED2 /* Bootstrap.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7964A13A6CE560014CED2 /* Bootstrap.c */; };
 		52D7968113A6CE560014CED2 /* assert.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7964F13A6CE560014CED2 /* assert.c */; };
 		52D7968413A6CE560014CED2 /* Exception.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7965213A6CE560014CED2 /* Exception.c */; };
@@ -32,6 +31,30 @@
 		52FDD6B1189C205E008E3D5E /* CommandTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F7713A5212700FC4089 /* CommandTest.c */; };
 		52FDD6B2189C2063008E3D5E /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DDC12013C59D45003AA75C /* libmonit.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		529D79B81A59EE1D003C3931 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52A12C2213A0FFAB00C6CEB7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52A12C2A13A0FFAB00C6CEB7;
+			remoteInfo = libmonit;
+		};
+		529D79BA1A59EE27003C3931 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52A12C2213A0FFAB00C6CEB7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52A12C2A13A0FFAB00C6CEB7;
+			remoteInfo = libmonit;
+		};
+		529D79BC1A59EE30003C3931 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52A12C2213A0FFAB00C6CEB7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52A12C2A13A0FFAB00C6CEB7;
+			remoteInfo = libmonit;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		522FF2F5192E700200C62A13 /* CopyFiles */ = {
@@ -64,8 +87,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5205CE261A59FEA500DB6380 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		522539AC18B91092003EB002 /* THIRDPARTY */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = THIRDPARTY; sourceTree = "<group>"; };
-		522FF2F9192E700200C62A13 /* TimeTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = TimeTest; path = /Users/hauk/src/libmonit/build/Debug/TimeTest; sourceTree = "<absolute>"; };
 		5239CECF1A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CED11A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CED31A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
@@ -74,7 +97,6 @@
 		5239CED91A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CEDB1A59E0C500A032B8 /* Link.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = Link.inc; sourceTree = "<group>"; };
 		5239CEE31A59E9E800A032B8 /* LinkTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LinkTest.c; sourceTree = "<group>"; };
-		523FFE7B19AFE7610018595D /* StrTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = StrTest; path = /Users/hauk/src/libmonit/build/Debug/StrTest; sourceTree = "<absolute>"; };
 		5274580B13A1009C00C422FE /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		5274580C13A1009C00C422FE /* configure.ac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = configure.ac; sourceTree = "<group>"; };
 		5274580D13A1009C00C422FE /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
@@ -95,6 +117,9 @@
 		52936F8513A5212700FC4089 /* test.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
 		52936F8613A5212700FC4089 /* TimeTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TimeTest.c; sourceTree = "<group>"; };
 		52936F9913A5216B00FC4089 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = COPYING; sourceTree = "<group>"; };
+		529D79B51A59EBFA003C3931 /* CommandTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CommandTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		529D79B61A59EBFA003C3931 /* TimeTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TimeTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		529D79B71A59EBFA003C3931 /* StrTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StrTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52A710B7196C920800379D67 /* Link.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Link.c; sourceTree = "<group>"; };
 		52A710B8196C920800379D67 /* Link.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Link.h; sourceTree = "<group>"; };
 		52D7964A13A6CE560014CED2 /* Bootstrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Bootstrap.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -136,7 +161,6 @@
 		52D7967A13A6CE560014CED2 /* StringBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = StringBuffer.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52D7967B13A6CE560014CED2 /* StringBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = StringBuffer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52DDC12013C59D45003AA75C /* libmonit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmonit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		52FDD6A8189C2036008E3D5E /* CommandTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = CommandTest; path = /Users/hauk/src/libmonit/build/Debug/CommandTest; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				5274580E13A1009C00C422FE /* README */,
+				5205CE261A59FEA500DB6380 /* README.md */,
 				522539AC18B91092003EB002 /* THIRDPARTY */,
 				52936F9913A5216B00FC4089 /* COPYING */,
 				5274580B13A1009C00C422FE /* bootstrap */,
@@ -303,6 +328,9 @@
 				5274583A13A1009C00C422FE /* test */,
 				52936F9513A5216B00FC4089 /* config */,
 				527BC1F2140776E700D9D3F0 /* Products */,
+				529D79B51A59EBFA003C3931 /* CommandTest */,
+				529D79B61A59EBFA003C3931 /* TimeTest */,
+				529D79B71A59EBFA003C3931 /* StrTest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -401,7 +429,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52A710BA196C920800379D67 /* Link.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,10 +446,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				529D79BB1A59EE27003C3931 /* PBXTargetDependency */,
 			);
 			name = TimeTest;
 			productName = CommandTest;
-			productReference = 522FF2F9192E700200C62A13 /* TimeTest */;
+			productReference = 529D79B61A59EBFA003C3931 /* TimeTest */;
 			productType = "com.apple.product-type.tool";
 		};
 		523FFE7219AFE7610018595D /* StrTest */ = {
@@ -436,10 +464,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				529D79BD1A59EE30003C3931 /* PBXTargetDependency */,
 			);
 			name = StrTest;
 			productName = CommandTest;
-			productReference = 523FFE7B19AFE7610018595D /* StrTest */;
+			productReference = 529D79B71A59EBFA003C3931 /* StrTest */;
 			productType = "com.apple.product-type.tool";
 		};
 		52A12C2A13A0FFAB00C6CEB7 /* libmonit */ = {
@@ -470,10 +499,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				529D79B91A59EE1D003C3931 /* PBXTargetDependency */,
 			);
 			name = CommandTest;
 			productName = CommandTest;
-			productReference = 52FDD6A8189C2036008E3D5E /* CommandTest */;
+			productReference = 529D79B51A59EBFA003C3931 /* CommandTest */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -555,6 +585,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		529D79B91A59EE1D003C3931 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52A12C2A13A0FFAB00C6CEB7 /* libmonit */;
+			targetProxy = 529D79B81A59EE1D003C3931 /* PBXContainerItemProxy */;
+		};
+		529D79BB1A59EE27003C3931 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52A12C2A13A0FFAB00C6CEB7 /* libmonit */;
+			targetProxy = 529D79BA1A59EE27003C3931 /* PBXContainerItemProxy */;
+		};
+		529D79BD1A59EE30003C3931 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52A12C2A13A0FFAB00C6CEB7 /* libmonit */;
+			targetProxy = 529D79BC1A59EE30003C3931 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		522FF2F7192E700200C62A13 /* Debug */ = {
