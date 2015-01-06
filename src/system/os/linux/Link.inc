@@ -53,36 +53,34 @@ static boolean_t _update(T L, const char *interface) {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
         /*
-         * Get interface speed (Optional: may not be present on older kernels).
+         * Get interface speed (Optional: may not be present on older kernels and readable for pseudo interface types).
          * $ cat /sys/class/net/eth0/speed
          * 1000
          */
         snprintf(path, sizeof(path), "/sys/class/net/%s/speed", interface);
         f = fopen(path, "r");
         if (f) {
-                if (fscanf(f, "%lld\n", &(L->speed)) != 1) {
-                        fclose(f);
-                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
-                }
-                L->speed *= 1000000; // mbps -> bps
+                if (fscanf(f, "%lld\n", &(L->speed)) == 1) {
+                        L->speed *= 1000000; // mbps -> bps
+                else
+                        L->speed = -1LL;
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
         /*
-         * Get interface full/half duplex status (Optional: may not be present on older kernels).
+         * Get interface full/half duplex status (Optional: may not be present on older kernels and readable for pseudo interface types).
          * $ cat /sys/class/net/eth0/duplex
          * full
          */
         snprintf(path, sizeof(path), "/sys/class/net/%s/duplex", interface);
         f = fopen(path, "r");
         if (f) {
-                if (fscanf(f, "%256s\n", buf) != 1) {
-                        fclose(f);
-                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
-                }
+                if (fscanf(f, "%256s\n", buf) == 1)
+                        L->duplex = Str_isEqual(buf, "full") ? 1LL : 0LL;
+                else
+                        L->duplex = -1;
                 fclose(f);
-                L->duplex = Str_isEqual(buf, "full") ? 1LL : 0LL;
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
