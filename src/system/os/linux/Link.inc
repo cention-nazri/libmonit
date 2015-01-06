@@ -85,8 +85,8 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_bytes", interface);
         f = fopen(path, "r");
         if (f) {
-                S->ibytes.last = S->ibytes.now;
-                fscanf(f, "%lld\n", &S->ibytes.now);
+                L->ibytes.last = L->ibytes.now;
+                fscanf(f, "%lld\n", &L->ibytes.now);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -98,8 +98,8 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_packets", interface);
         f = fopen(path, "r");
         if (f) {
-                S->ipackets.last = S->ipackets.now;
-                fscanf(f, "%lld\n", &S->ipackets.now);
+                L->ipackets.last = L->ipackets.now;
+                fscanf(f, "%lld\n", &L->ipackets.now);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -111,8 +111,8 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_errors", interface);
         f = fopen(path, "r");
         if (f) {
-                S->ierrors.last = S->ierrors.now;
-                fscanf(f, "%lld\n", &S->ierrors.now);
+                L->ierrors.last = L->ierrors.now;
+                fscanf(f, "%lld\n", &L->ierrors.now);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -124,8 +124,8 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_bytes", interface);
         f = fopen(path, "r");
         if (f) {
-                S->obytes.last = S->obytes.now;
-                fscanf(f, "%lld\n", &S->obytes.now);
+                L->obytes.last = L->obytes.now;
+                fscanf(f, "%lld\n", &L->obytes.now);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -137,8 +137,8 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_packets", interface);
         f = fopen(path, "r");
         if (f) {
-                S->opackets.last = S->opackets.now;
-                fscanf(f, "%lld\n", &S->opackets.now);
+                L->opackets.last = L->opackets.now;
+                fscanf(f, "%lld\n", &L->opackets.now);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -150,14 +150,14 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_errors", interface);
         f = fopen(path, "r");
         if (f) {
-                S->oerrors.last = S->oerrors.now;
-                fscanf(f, "%lld\n", &S->oerrors.now);
+                L->oerrors.last = L->oerrors.now;
+                fscanf(f, "%lld\n", &L->oerrors.now);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
-        S->timestamp.last = S->timestamp.now;
-        S->timestamp.now = Time_milli();
+        L->timestamp.last = L->timestamp.now;
+        L->timestamp.now = Time_milli();
         return true;
 }
 
