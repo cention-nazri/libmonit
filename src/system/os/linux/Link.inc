@@ -43,8 +43,11 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/operstate", interface);
         FILE *f = fopen(path, "r");
         if (f) {
-                if (fscanf(f, "%256s\n", buf) == 1)
-                        L->state = Str_isEqual(buf, "down") ? 0LL : 1LL;
+                if (fscanf(f, "%256s\n", buf) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
+                L->state = Str_isEqual(buf, "down") ? 0LL : 1LL;
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -57,9 +60,11 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/speed", interface);
         f = fopen(path, "r");
         if (f) {
-                long long speed;
-                if (fscanf(f, "%lld\n", &speed) == 1)
-                        L->speed = speed * 1000000; // mbps -> bps
+                if (fscanf(f, "%lld\n", &(L->speed)) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
+                L->speed *= 1000000; // mbps -> bps
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -72,9 +77,12 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/duplex", interface);
         f = fopen(path, "r");
         if (f) {
-                if (fscanf(f, "%256s\n", buf) == 1)
-                        L->duplex = Str_isEqual(buf, "full") ? 1LL : 0LL;
+                if (fscanf(f, "%256s\n", buf) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
                 fclose(f);
+                L->duplex = Str_isEqual(buf, "full") ? 1LL : 0LL;
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
@@ -86,7 +94,10 @@ static boolean_t _update(T L, const char *interface) {
         f = fopen(path, "r");
         if (f) {
                 L->ibytes.last = L->ibytes.now;
-                fscanf(f, "%lld\n", &L->ibytes.now);
+                if (fscanf(f, "%lld\n", &(L->ibytes.now)) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -99,7 +110,10 @@ static boolean_t _update(T L, const char *interface) {
         f = fopen(path, "r");
         if (f) {
                 L->ipackets.last = L->ipackets.now;
-                fscanf(f, "%lld\n", &L->ipackets.now);
+                if (fscanf(f, "%lld\n", &(L->ipackets.now)) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -112,7 +126,10 @@ static boolean_t _update(T L, const char *interface) {
         f = fopen(path, "r");
         if (f) {
                 L->ierrors.last = L->ierrors.now;
-                fscanf(f, "%lld\n", &L->ierrors.now);
+                if (fscanf(f, "%lld\n", &(L->ierrors.now)) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -125,7 +142,10 @@ static boolean_t _update(T L, const char *interface) {
         f = fopen(path, "r");
         if (f) {
                 L->obytes.last = L->obytes.now;
-                fscanf(f, "%lld\n", &L->obytes.now);
+                if (fscanf(f, "%lld\n", &(L->obytes.now)) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -138,7 +158,10 @@ static boolean_t _update(T L, const char *interface) {
         f = fopen(path, "r");
         if (f) {
                 L->opackets.last = L->opackets.now;
-                fscanf(f, "%lld\n", &L->opackets.now);
+                if (fscanf(f, "%lld\n", &(L->opackets.now)) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -151,7 +174,10 @@ static boolean_t _update(T L, const char *interface) {
         f = fopen(path, "r");
         if (f) {
                 L->oerrors.last = L->oerrors.now;
-                fscanf(f, "%lld\n", &L->oerrors.now);
+                if (fscanf(f, "%lld\n", &(L->oerrors.now)) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
