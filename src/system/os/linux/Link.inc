@@ -154,7 +154,7 @@ static boolean_t _update(T L, const char *interface) {
                 fscanf(f, "%lld\n", &S->oerrors.now);
                 fclose(f);
         } else {
-                THROW(AssertException, "Cannot read /proc/net/dev -- %s", System_getError(errno));
+                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
         S->timestamp.last = S->timestamp.now;
         S->timestamp.now = Time_milli();
