@@ -57,8 +57,8 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/speed", interface);
         f = fopen(path, "r");
         if (f) {
-                int speed;
-                if (fscanf(f, "%d\n", &speed) == 1)
+                long long speed;
+                if (fscanf(f, "%lld\n", &speed) == 1)
                         L->speed = speed * 1000000; // mbps -> bps
                 fclose(f);
         } else {
