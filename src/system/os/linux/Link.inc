@@ -65,8 +65,6 @@ static boolean_t _update(T L, const char *interface) {
                 else
                         L->speed = -1LL;
                 fclose(f);
-        } else {
-                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
         /*
          * Get interface full/half duplex status (Optional: may not be present on older kernels and readable for pseudo interface types).
@@ -81,8 +79,6 @@ static boolean_t _update(T L, const char *interface) {
                 else
                         L->duplex = -1;
                 fclose(f);
-        } else {
-                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
         /*
          * $ cat /sys/class/net/eth0/statistics/rx_bytes 
