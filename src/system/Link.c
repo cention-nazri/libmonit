@@ -78,12 +78,13 @@ static struct {
 } _stats = {};
 
 
-typedef struct NetStatisticsData_T {
+typedef struct LinkData_T {
+        long long raw;
         long long last;
         long long now;
         long long minute[60];
         long long hour[24];
-} NetStatisticsData_T;
+} LinkData_T;
 
 
 struct T {
@@ -96,12 +97,12 @@ struct T {
         int state;       // State (0 = down, 1 = up)
         int duplex;      // Duplex (0 = half, 1 = full)
         long long speed; // Speed [bps]
-        NetStatisticsData_T ipackets;  // Packets received on interface
-        NetStatisticsData_T ierrors;   // Input errors on interface
-        NetStatisticsData_T ibytes;    // Total number of octets received
-        NetStatisticsData_T opackets;  // Packets sent on interface
-        NetStatisticsData_T oerrors;   // Output errors on interface
-        NetStatisticsData_T obytes;    // Total number of octets sent
+        LinkData_T ipackets;  // Packets received on interface
+        LinkData_T ierrors;   // Input errors on interface
+        LinkData_T ibytes;    // Total number of octets received
+        LinkData_T opackets;  // Packets sent on interface
+        LinkData_T oerrors;   // Output errors on interface
+        LinkData_T obytes;    // Total number of octets sent
 };
 
 
@@ -117,6 +118,20 @@ static void __attribute__ ((destructor)) _destructor() {
 
 
 /* --------------------------------------------------------------- Private */
+
+
+static void _updateValue(LinkData_T *data, long long raw) {
+       long long value = raw;
+#ifndef __LP64__
+        if (raw < data->raw)
+                value = data->now + 0xFFFFFFFFLL - data->raw + raw; // Counter wrapped
+        else
+                value = data->now + raw - data->raw; 
+#endif
+       data->last = data->now;
+       data->now = value;
+       data->raw = raw;
+}
 
 
 #if defined DARWIN
@@ -136,7 +151,8 @@ static void __attribute__ ((destructor)) _destructor() {
 #endif
 
 
-static void _resetData(NetStatisticsData_T *data, long long value) {
+static void _resetData(LinkData_T *data, long long value) {
+        data->last = data->now = 0LL;
         for (int i = 0; i < 60; i++)
                 data->minute[i] = value;
         for (int i = 0; i < 24; i++)
@@ -145,11 +161,8 @@ static void _resetData(NetStatisticsData_T *data, long long value) {
 
 
 static void _reset(T L) {
-        L->timestamp.last = 0LL;
-        L->timestamp.now = 0LL;
-        L->state = -1;
-        L->duplex = -1;
-        L->speed = 0LL;
+        L->timestamp.last = L->timestamp.now = L->speed = 0LL;
+        L->state = L->duplex = -1;
         _resetData(&(L->ibytes), -1LL);
         _resetData(&(L->ipackets), -1LL);
         _resetData(&(L->ierrors), -1LL);
@@ -159,7 +172,7 @@ static void _reset(T L) {
 }
 
 
-static long long _deltaSecond(T L, NetStatisticsData_T *data) {
+static long long _deltaSecond(T L, LinkData_T *data) {
         if (L->timestamp.last > 0 && L->timestamp.now > L->timestamp.last)
                 if (data->last > -1 && data->now > data->last)
                         return (long long)((data->now - data->last) * 1000. / (L->timestamp.now - L->timestamp.last));
@@ -167,7 +180,7 @@ static long long _deltaSecond(T L, NetStatisticsData_T *data) {
 }
 
 
-static long long _deltaMinute(T L, NetStatisticsData_T *data, int count) {
+static long long _deltaMinute(T L, LinkData_T *data, int count) {
         assert(count > 0);
         assert(count <= 60);
         int stop = Time_minutes(L->timestamp.now / 1000.);
@@ -177,7 +190,7 @@ static long long _deltaMinute(T L, NetStatisticsData_T *data, int count) {
 }
 
 
-static long long _deltaHour(T L, NetStatisticsData_T *data, int count) {
+static long long _deltaHour(T L, LinkData_T *data, int count) {
         assert(count > 0);
         assert(count <= 24);
         int stop = Time_hour(L->timestamp.now / 1000.);

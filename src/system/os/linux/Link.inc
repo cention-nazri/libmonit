@@ -91,11 +91,12 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_bytes", interface);
         f = fopen(path, "r");
         if (f) {
-                L->ibytes.last = L->ibytes.now;
-                if (fscanf(f, "%lld\n", &(L->ibytes.now)) != 1) {
+                long long ibytes;
+                if (fscanf(f, "%lld\n", &ibytes) != 1) {
                         fclose(f);
                         THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
                 }
+                _updateValue(&(L->ibytes), ibytes);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -107,11 +108,12 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_packets", interface);
         f = fopen(path, "r");
         if (f) {
-                L->ipackets.last = L->ipackets.now;
-                if (fscanf(f, "%lld\n", &(L->ipackets.now)) != 1) {
+                long long ipackets;
+                if (fscanf(f, "%lld\n", &ipackets) != 1) {
                         fclose(f);
                         THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
                 }
+                _updateValue(&(L->ipackets), ipackets);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -123,11 +125,12 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_errors", interface);
         f = fopen(path, "r");
         if (f) {
-                L->ierrors.last = L->ierrors.now;
-                if (fscanf(f, "%lld\n", &(L->ierrors.now)) != 1) {
+                long long ierrors;
+                if (fscanf(f, "%lld\n", &ierrors) != 1) {
                         fclose(f);
                         THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
                 }
+                _updateValue(&(L->ierrors), ierrors);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -139,11 +142,12 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_bytes", interface);
         f = fopen(path, "r");
         if (f) {
-                L->obytes.last = L->obytes.now;
-                if (fscanf(f, "%lld\n", &(L->obytes.now)) != 1) {
+                long long obytes;
+                if (fscanf(f, "%lld\n", &obytes) != 1) {
                         fclose(f);
                         THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
                 }
+                _updateValue(&(L->obytes), obytes);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -155,11 +159,12 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_packets", interface);
         f = fopen(path, "r");
         if (f) {
-                L->opackets.last = L->opackets.now;
-                if (fscanf(f, "%lld\n", &(L->opackets.now)) != 1) {
+                long long opackets;
+                if (fscanf(f, "%lld\n", &opackets) != 1) {
                         fclose(f);
                         THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
                 }
+                _updateValue(&(L->opackets), opackets);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
@@ -171,11 +176,12 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_errors", interface);
         f = fopen(path, "r");
         if (f) {
-                L->oerrors.last = L->oerrors.now;
-                if (fscanf(f, "%lld\n", &(L->oerrors.now)) != 1) {
+                long long oerrors;
+                if (fscanf(f, "%lld\n", &oerrors) != 1) {
                         fclose(f);
                         THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
                 }
+                _updateValue(&(L->oerrors), oerrors);
                 fclose(f);
         } else {
                 THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
