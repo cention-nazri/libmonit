@@ -38,19 +38,13 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(id.name, sizeof(id.name), interface);
         if (perfstat_netinterface(&id, &buf, sizeof(buf), 1) != 1)
                 THROW(AssertException, "Cannot get perfstat data for %s -- %s", interface, System_getError(errno));
-        L->ipackets.last = L->ipackets.now;
-        L->ibytes.last = L->ibytes.now;
-        L->ierrors.last = L->ierrors.now;
-        L->opackets.last = L->opackets.now;
-        L->obytes.last = L->obytes.now;
-        L->oerrors.last = L->oerrors.now;
+        _updateValue(&(L->ibytes), buf.ibytes);
+        _updateValue(&(L->ipackets), buf.ipackets);
+        _updateValue(&(L->ierrors), buf.ierrors);
+        _updateValue(&(L->obytes), buf.obytes);
+        _updateValue(&(L->opackets), buf.opackets);
+        _updateValue(&(L->oerrors), buf.oerrors);
         L->speed = buf.bitrate;
-        L->ipackets.now = buf.ipackets;
-        L->ibytes.now = buf.ibytes;
-        L->ierrors.now = buf.ierrors;
-        L->opackets.now = buf.opackets;
-        L->obytes.now = buf.obytes;
-        L->oerrors.now = buf.oerrors;
         L->timestamp.last = L->timestamp.now;
         L->timestamp.now = Time_milli();
         //FIXME: L->state and L->duplex are not implemented

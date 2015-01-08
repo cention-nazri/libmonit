@@ -65,10 +65,8 @@ static boolean_t _update(T L, const char *interface) {
                          * lo:0:lo0:opackets       878
                          */
                         if ((ksp = kstat_lookup(kc, "lo", -1, (char *)interface)) && kstat_read(kc, ksp, NULL) != -1) {
-                                L->ipackets.last = L->ipackets.now;
-                                L->opackets.last = L->opackets.now;
-                                L->ipackets.now = _getKstatValue(ksp, "ipackets");
-                                L->opackets.now = _getKstatValue(ksp, "opackets");
+                                _updateValue(&(L->ipackets), _getKstatValue(ksp, "ipackets"));
+                                _updateValue(&(L->opackets), _getKstatValue(ksp, "opackets"));
                                 L->timestamp.last = L->timestamp.now;
                                 L->timestamp.now = Time_milli();
                                 kstat_close(kc);
@@ -99,21 +97,15 @@ static boolean_t _update(T L, const char *interface) {
                          * link:0:net0:obytes64    3227785
                          */
                         if ((ksp = kstat_lookup(kc, "link", -1, (char *)interface)) && kstat_read(kc, ksp, NULL) != -1) {
-                                L->ipackets.last = L->ipackets.now;
-                                L->ibytes.last = L->ibytes.now;
-                                L->ierrors.last = L->ierrors.now;
-                                L->opackets.last = L->opackets.now;
-                                L->obytes.last = L->obytes.now;
-                                L->oerrors.last = L->oerrors.now;
                                 L->state = _getKstatValue(ksp, "link_state") ? 1LL : 0LL;
                                 L->speed = _getKstatValue(ksp, "ifspeed");
                                 L->duplex = _getKstatValue(ksp, "link_duplex") == 2 ? 1LL : 0LL;
-                                L->ipackets.now = _getKstatValue(ksp, "ipackets64");
-                                L->ibytes.now = _getKstatValue(ksp, "rbytes64");
-                                L->ierrors.now = _getKstatValue(ksp, "ierrors");
-                                L->opackets.now = _getKstatValue(ksp, "opackets64");
-                                L->obytes.now = _getKstatValue(ksp, "obytes64");
-                                L->oerrors.now = _getKstatValue(ksp, "oerrors");
+                                _updateValue(&(L->ibytes), _getKstatValue(ksp, "rbytes64"));
+                                _updateValue(&(L->ipackets), _getKstatValue(ksp, "ipackets64"));
+                                _updateValue(&(L->ierrors), _getKstatValue(ksp, "ierrors"));
+                                _updateValue(&(L->obytes), _getKstatValue(ksp, "obytes64"));
+                                _updateValue(&(L->opackets), _getKstatValue(ksp, "opackets64"));
+                                _updateValue(&(L->oerrors), _getKstatValue(ksp, "oerrors"));
                                 L->timestamp.last = L->timestamp.now;
                                 L->timestamp.now = Time_milli();
                                 kstat_close(kc);
