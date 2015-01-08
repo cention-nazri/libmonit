@@ -46,6 +46,15 @@
 #ifdef HAVE_KSTAT_H
 #include <kstat.h>
 #endif
+#ifdef HAVE_SYS_SYSCTL_H
+#include <sys/sysctl.h>
+#endif
+#ifdef HAVE_NET_ROUTE_H
+#include <net/route.h>
+#endif
+#ifdef HAVE_NET_IF_DL_H
+#include <net/if_dl.h>
+#endif
 #ifdef HAVE_LIBPERFSTAT_H
 #include <sys/protosw.h>
 #include <libperfstat.h>
@@ -79,7 +88,9 @@ static struct {
 
 
 typedef struct LinkData_T {
+#ifndef __LP64__
         long long raw;
+#endif
         long long last;
         long long now;
         long long minute[60];
@@ -124,13 +135,13 @@ static void _updateValue(LinkData_T *data, long long raw) {
        long long value = raw;
 #ifndef __LP64__
         if (raw < data->raw)
-                value = data->now + 0xFFFFFFFFLL - data->raw + raw; // Counter wrapped
+                value = data->now + (1<<32)LL - data->raw + raw; // Counter wrapped
         else
                 value = data->now + raw - data->raw; 
+       data->raw = raw;
 #endif
        data->last = data->now;
        data->now = value;
-       data->raw = raw;
 }
 
 

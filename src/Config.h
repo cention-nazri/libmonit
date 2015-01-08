@@ -39,6 +39,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <string.h>
+#include <mach/boolean.h>
 
 #include "xconfig.h"
 #include "assert.h"
@@ -100,8 +101,10 @@ typedef unsigned char uchar_t;
  * The internal 32 bits integer type
  */
 typedef  unsigned int uint32_t;
+#endif
 
 
+#if !defined(SOLARIS) && !defined(AIX) && !defined(DARWIN)
 /**
  * The internal boolean integer type
  */
