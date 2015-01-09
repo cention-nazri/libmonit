@@ -89,12 +89,12 @@ static struct {
 
 typedef struct LinkData_T {
 #ifndef __LP64__
-        long long raw;
+        unsigned long long raw;
 #endif
-        long long last;
-        long long now;
-        long long minute[60];
-        long long hour[24];
+        unsigned long long last;
+        unsigned long long now;
+        unsigned long long minute[60];
+        unsigned long long hour[24];
 } LinkData_T;
 
 
@@ -102,8 +102,8 @@ struct T {
         char *object;
         const char *(*resolve)(const char *object); // Resolve Object -> Interface, set during Link_T instantiation by constructor (currently we implement only IPAddress -> Interface lookup)
         struct {
-                long long last;
-                long long now;
+                unsigned long long last;
+                unsigned long long now;
         } timestamp;
         int state;       // State (0 = down, 1 = up)
         int duplex;      // Duplex (0 = half, 1 = full)
@@ -131,11 +131,11 @@ static void __attribute__ ((destructor)) _destructor() {
 /* --------------------------------------------------------------- Private */
 
 
-static void _updateValue(LinkData_T *data, long long raw) {
-       long long value = raw;
+static void _updateValue(LinkData_T *data, unsigned long long raw) {
+       unsigned long long value = raw;
 #ifndef __LP64__
         if (raw < data->raw)
-                value = data->now + (1<<32)LL - data->raw + raw; // Counter wrapped
+                value = data->now + (1<<32)ULL - data->raw + raw; // Counter wrapped
         else
                 value = data->now + raw - data->raw; 
        data->raw = raw;
@@ -162,8 +162,8 @@ static void _updateValue(LinkData_T *data, long long raw) {
 #endif
 
 
-static void _resetData(LinkData_T *data, long long value) {
-        data->last = data->now = 0LL;
+static void _resetData(LinkData_T *data, unsigned long long value) {
+        data->last = data->now = value;
         for (int i = 0; i < 60; i++)
                 data->minute[i] = value;
         for (int i = 0; i < 24; i++)
@@ -172,42 +172,43 @@ static void _resetData(LinkData_T *data, long long value) {
 
 
 static void _reset(T L) {
-        L->timestamp.last = L->timestamp.now = L->speed = 0LL;
+        L->timestamp.last = L->timestamp.now = 0ULL;
+        L->speed = -1LL;
         L->state = L->duplex = -1;
-        _resetData(&(L->ibytes), -1LL);
-        _resetData(&(L->ipackets), -1LL);
-        _resetData(&(L->ierrors), -1LL);
-        _resetData(&(L->obytes), -1LL);
-        _resetData(&(L->opackets), -1LL);
-        _resetData(&(L->oerrors), -1LL);
+        _resetData(&(L->ibytes), 0ULL);
+        _resetData(&(L->ipackets), 0ULL);
+        _resetData(&(L->ierrors), 0ULL);
+        _resetData(&(L->obytes), 0ULL);
+        _resetData(&(L->opackets), 0ULL);
+        _resetData(&(L->oerrors), 0ULL);
 }
 
 
-static long long _deltaSecond(T L, LinkData_T *data) {
+static unsigned long long _deltaSecond(T L, LinkData_T *data) {
         if (L->timestamp.last > 0 && L->timestamp.now > L->timestamp.last)
-                if (data->last > -1 && data->now > data->last)
-                        return (long long)((data->now - data->last) * 1000. / (L->timestamp.now - L->timestamp.last));
-        return 0LL;
+                if (data->last > 0 && data->now > data->last)
+                        return (unsigned long long)((data->now - data->last) * 1000. / (L->timestamp.now - L->timestamp.last));
+        return 0ULL;
 }
 
 
-static long long _deltaMinute(T L, LinkData_T *data, int count) {
+static unsigned long long _deltaMinute(T L, LinkData_T *data, int count) {
         assert(count > 0);
         assert(count <= 60);
         int stop = Time_minutes(L->timestamp.now / 1000.);
         int delta = stop - count;
         int start = delta < 0 ? 60 + delta + 1 : delta;
-        return data->minute[start] > -1LL ? data->minute[stop] - data->minute[start] : 0LL;
+        return data->minute[stop] - data->minute[start];
 }
 
 
-static long long _deltaHour(T L, LinkData_T *data, int count) {
+static unsigned long long _deltaHour(T L, LinkData_T *data, int count) {
         assert(count > 0);
         assert(count <= 24);
         int stop = Time_hour(L->timestamp.now / 1000.);
         int delta = stop - count;
         int start = delta < 0 ? 24 + delta + 1 : delta;
-        return data->hour[start] > -1LL ? data->hour[stop] - data->hour[start] : 0LL;
+        return data->hour[stop] - data->hour[start];
 }
 
 
@@ -243,10 +244,7 @@ static const char *_returnInterface(const char *interface) {
 
 
 static void _updateHistory(T L) {
-        time_t now = L->timestamp.now / 1000.;
-        int minute = Time_minutes(now);
-        int hour =  Time_hour(now);
-        if (L->timestamp.last == 0LL) {
+        if (L->timestamp.last == 0ULL) {
                 // Initialize the history on first update, so we can start accounting for total data immediately. Any delta will show difference between the very first value and then given point in time, until regular update cycle
                 _resetData(&(L->ibytes), L->ibytes.now);
                 _resetData(&(L->ipackets), L->ipackets.now);
@@ -256,6 +254,9 @@ static void _updateHistory(T L) {
                 _resetData(&(L->oerrors), L->oerrors.now);
         } else {
                 // Update relative values only
+                time_t now = L->timestamp.now / 1000.;
+                int minute = Time_minutes(now);
+                int hour =  Time_hour(now);
                 L->ibytes.minute[minute] = L->ibytes.hour[hour] = L->ibytes.now;
                 L->ipackets.minute[minute] = L->ipackets.hour[hour] = L->ipackets.now;
                 L->ierrors.minute[minute] = L->ierrors.hour[hour] = L->ierrors.now;
@@ -339,25 +340,25 @@ void Link_update(T L) {
 }
 
 
-long long Link_getBytesInPerSecond(T L) {
+unsigned long long Link_getBytesInPerSecond(T L) {
         assert(L);
         return _deltaSecond(L, &(L->ibytes));
 }
 
 
-long long Link_getBytesInPerMinute(T L, int count) {
+unsigned long long Link_getBytesInPerMinute(T L, int count) {
         assert(L);
         return _deltaMinute(L, &(L->ibytes), count);
 }
 
 
-long long Link_getBytesInPerHour(T L, int count) {
+unsigned long long Link_getBytesInPerHour(T L, int count) {
         assert(L);
         return _deltaHour(L, &(L->ibytes), count);
 }
 
 
-long long Link_getBytesInTotal(T L) {
+unsigned long long Link_getBytesInTotal(T L) {
         assert(L);
         return L->ibytes.now;
 }
@@ -369,73 +370,73 @@ double Link_getSaturationInPerSecond(T L) {
 }
 
 
-long long Link_getPacketsInPerSecond(T L) {
+unsigned long long Link_getPacketsInPerSecond(T L) {
         assert(L);
         return _deltaSecond(L, &(L->ipackets));
 }
 
 
-long long Link_getPacketsInPerMinute(T L, int count) {
+unsigned long long Link_getPacketsInPerMinute(T L, int count) {
         assert(L);
         return _deltaMinute(L, &(L->ipackets), count);
 }
 
 
-long long Link_getPacketsInPerHour(T L, int count) {
+unsigned long long Link_getPacketsInPerHour(T L, int count) {
         assert(L);
         return _deltaHour(L, &(L->ipackets), count);
 }
 
 
-long long Link_getPacketsInTotal(T L) {
+unsigned long long Link_getPacketsInTotal(T L) {
         assert(L);
         return L->ipackets.now;
 }
 
 
-long long Link_getErrorsInPerSecond(T L) {
+unsigned long long Link_getErrorsInPerSecond(T L) {
         assert(L);
         return _deltaSecond(L, &(L->ierrors));
 }
 
 
-long long Link_getErrorsInPerMinute(T L, int count) {
+unsigned long long Link_getErrorsInPerMinute(T L, int count) {
         assert(L);
         return _deltaMinute(L, &(L->ierrors), count);
 }
 
 
-long long Link_getErrorsInPerHour(T L, int count) {
+unsigned long long Link_getErrorsInPerHour(T L, int count) {
         assert(L);
         return _deltaHour(L, &(L->ierrors), count);
 }
 
 
-long long Link_getErrorsInTotal(T L) {
+unsigned long long Link_getErrorsInTotal(T L) {
         assert(L);
         return L->ierrors.now;
 }
 
 
-long long Link_getBytesOutPerSecond(T L) {
+unsigned long long Link_getBytesOutPerSecond(T L) {
         assert(L);
         return _deltaSecond(L, &(L->obytes));
 }
 
 
-long long Link_getBytesOutPerMinute(T L, int count) {
+unsigned long long Link_getBytesOutPerMinute(T L, int count) {
         assert(L);
         return _deltaMinute(L, &(L->obytes), count);
 }
 
 
-long long Link_getBytesOutPerHour(T L, int count) {
+unsigned long long Link_getBytesOutPerHour(T L, int count) {
         assert(L);
         return _deltaHour(L, &(L->obytes), count);
 }
 
 
-long long Link_getBytesOutTotal(T L) {
+unsigned long long Link_getBytesOutTotal(T L) {
         assert(L);
         return L->obytes.now;
 }
@@ -447,49 +448,49 @@ double Link_getSaturationOutPerSecond(T L) {
 }
 
 
-long long Link_getPacketsOutPerSecond(T L) {
+unsigned long long Link_getPacketsOutPerSecond(T L) {
         assert(L);
         return _deltaSecond(L, &(L->opackets));
 }
 
 
-long long Link_getPacketsOutPerMinute(T L, int count) {
+unsigned long long Link_getPacketsOutPerMinute(T L, int count) {
         assert(L);
         return _deltaMinute(L, &(L->opackets), count);
 }
 
 
-long long Link_getPacketsOutPerHour(T L, int count) {
+unsigned long long Link_getPacketsOutPerHour(T L, int count) {
         assert(L);
         return _deltaHour(L, &(L->opackets), count);
 }
 
 
-long long Link_getPacketsOutTotal(T L) {
+unsigned long long Link_getPacketsOutTotal(T L) {
         assert(L);
         return L->opackets.now;
 }
 
 
-long long Link_getErrorsOutPerSecond(T L) {
+unsigned long long Link_getErrorsOutPerSecond(T L) {
         assert(L);
         return _deltaSecond(L, &(L->oerrors));
 }
 
 
-long long Link_getErrorsOutPerMinute(T L, int count) {
+unsigned long long Link_getErrorsOutPerMinute(T L, int count) {
         assert(L);
         return _deltaMinute(L, &(L->oerrors), count);
 }
 
 
-long long Link_getErrorsOutPerHour(T L, int count) {
+unsigned long long Link_getErrorsOutPerHour(T L, int count) {
         assert(L);
         return _deltaHour(L, &(L->oerrors), count);
 }
 
 
-long long Link_getErrorsOutTotal(T L) {
+unsigned long long Link_getErrorsOutTotal(T L) {
         assert(L);
         return L->oerrors.now;
 }
