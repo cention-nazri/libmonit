@@ -135,7 +135,7 @@ static void _updateValue(LinkData_T *data, unsigned long long raw) {
        unsigned long long value = raw;
 #ifndef __LP64__
         if (raw < data->raw)
-                value = data->now + (1<<32)ULL - data->raw + raw; // Counter wrapped
+                value = data->now + 4294967296ULL - data->raw + raw; // Counter wrapped
         else
                 value = data->now + raw - data->raw; 
        data->raw = raw;
