@@ -36,12 +36,15 @@
  */
 
 
+#include "xconfig.h"
+
 #include <errno.h>
 #include <limits.h>
 #include <string.h>
+#ifdef HAVE_MACH_BOOLEAN_H
 #include <mach/boolean.h>
+#endif
 
-#include "xconfig.h"
 #include "assert.h"
 #include "system/Mem.h"
 
