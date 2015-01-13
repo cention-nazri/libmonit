@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		522FF2F4192E700200C62A13 /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DDC12013C59D45003AA75C /* libmonit.a */; };
 		522FF2FA192E702D00C62A13 /* TimeTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8613A5212700FC4089 /* TimeTest.c */; };
-		523FFE7619AFE7610018595D /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DDC12013C59D45003AA75C /* libmonit.a */; };
 		523FFE7C19AFE7B30018595D /* StrTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F8313A5212700FC4089 /* StrTest.c */; };
+		52A31C841A653235009D3D83 /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52A31C821A6531D8009D3D83 /* libmonit.a */; };
+		52A31C851A65323A009D3D83 /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52A31C821A6531D8009D3D83 /* libmonit.a */; };
+		52A31C861A653254009D3D83 /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52A31C821A6531D8009D3D83 /* libmonit.a */; };
 		52A710B9196C920800379D67 /* Link.c in Sources */ = {isa = PBXBuildFile; fileRef = 52A710B7196C920800379D67 /* Link.c */; };
 		52D7967E13A6CE560014CED2 /* Bootstrap.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7964A13A6CE560014CED2 /* Bootstrap.c */; };
 		52D7968113A6CE560014CED2 /* assert.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7964F13A6CE560014CED2 /* assert.c */; };
@@ -29,7 +30,6 @@
 		52D796A113A6CE560014CED2 /* Str.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7967813A6CE560014CED2 /* Str.c */; };
 		52D796A313A6CE560014CED2 /* StringBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 52D7967A13A6CE560014CED2 /* StringBuffer.c */; };
 		52FDD6B1189C205E008E3D5E /* CommandTest.c in Sources */ = {isa = PBXBuildFile; fileRef = 52936F7713A5212700FC4089 /* CommandTest.c */; };
-		52FDD6B2189C2063008E3D5E /* libmonit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52DDC12013C59D45003AA75C /* libmonit.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +120,7 @@
 		529D79B51A59EBFA003C3931 /* CommandTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CommandTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		529D79B61A59EBFA003C3931 /* TimeTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TimeTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		529D79B71A59EBFA003C3931 /* StrTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StrTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		52A31C821A6531D8009D3D83 /* libmonit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmonit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		52A710B7196C920800379D67 /* Link.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Link.c; sourceTree = "<group>"; };
 		52A710B8196C920800379D67 /* Link.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Link.h; sourceTree = "<group>"; };
 		52D7964A13A6CE560014CED2 /* Bootstrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Bootstrap.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -160,7 +161,6 @@
 		52D7967913A6CE560014CED2 /* Str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Str.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52D7967A13A6CE560014CED2 /* StringBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = StringBuffer.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52D7967B13A6CE560014CED2 /* StringBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = StringBuffer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		52DDC12013C59D45003AA75C /* libmonit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmonit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,7 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				522FF2F4192E700200C62A13 /* libmonit.a in Frameworks */,
+				52A31C851A65323A009D3D83 /* libmonit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,7 +176,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				523FFE7619AFE7610018595D /* libmonit.a in Frameworks */,
+				52A31C861A653254009D3D83 /* libmonit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +191,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52FDD6B2189C2063008E3D5E /* libmonit.a in Frameworks */,
+				52A31C841A653235009D3D83 /* libmonit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,14 +291,6 @@
 			path = test;
 			sourceTree = "<group>";
 		};
-		527BC1F2140776E700D9D3F0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				52DDC12013C59D45003AA75C /* libmonit.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		52936F7813A5212700FC4089 /* data */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,11 +319,19 @@
 				52D7964813A6CE560014CED2 /* src */,
 				5274583A13A1009C00C422FE /* test */,
 				52936F9513A5216B00FC4089 /* config */,
-				527BC1F2140776E700D9D3F0 /* Products */,
-				529D79B51A59EBFA003C3931 /* CommandTest */,
-				529D79B61A59EBFA003C3931 /* TimeTest */,
-				529D79B71A59EBFA003C3931 /* StrTest */,
+				52A31C831A6531DF009D3D83 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		52A31C831A6531DF009D3D83 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				529D79B71A59EBFA003C3931 /* StrTest */,
+				529D79B61A59EBFA003C3931 /* TimeTest */,
+				529D79B51A59EBFA003C3931 /* CommandTest */,
+				52A31C821A6531D8009D3D83 /* libmonit.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		52D7964813A6CE560014CED2 /* src */ = {
@@ -485,7 +485,7 @@
 			);
 			name = libmonit;
 			productName = monit;
-			productReference = 52DDC12013C59D45003AA75C /* libmonit.a */;
+			productReference = 52A31C821A6531D8009D3D83 /* libmonit.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		52FDD6A7189C2036008E3D5E /* CommandTest */ = {
