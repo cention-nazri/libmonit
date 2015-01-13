@@ -36,11 +36,18 @@
  */
 
 
+#include "xconfig.h"
+
 #include <errno.h>
 #include <limits.h>
 #include <string.h>
+#ifdef HAVE_MACH_BOOLEAN_H
+#include <mach/boolean.h>
+#endif
+#ifdef HAVE_UVM_UVM_PARAM_H
+#include <uvm/uvm_param.h>
+#endif
 
-#include "xconfig.h"
 #include "assert.h"
 #include "system/Mem.h"
 
@@ -100,8 +107,10 @@ typedef unsigned char uchar_t;
  * The internal 32 bits integer type
  */
 typedef  unsigned int uint32_t;
+#endif
 
 
+#if !defined(SOLARIS) && !defined(AIX) && !defined(DARWIN) && !defined(OPENBSD)
 /**
  * The internal boolean integer type
  */

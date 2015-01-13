@@ -63,18 +63,12 @@ static boolean_t _update(T L, const char *interface) {
                         L->timestamp.last = L->timestamp.now;
                         L->timestamp.now = Time_milli();
                         L->speed = data->ifi_baudrate;
-                        L->ipackets.last = L->ipackets.now;
-                        L->ipackets.now = data->ifi_ipackets;
-                        L->ibytes.last = L->ibytes.now;
-                        L->ibytes.now = data->ifi_ibytes;
-                        L->ierrors.last = L->ierrors.now;
-                        L->ierrors.now = data->ifi_ierrors;
-                        L->opackets.last = L->opackets.now;
-                        L->opackets.now = data->ifi_opackets;
-                        L->obytes.last = L->obytes.now;
-                        L->obytes.now = data->ifi_obytes;
-                        L->oerrors.last = L->oerrors.now;
-                        L->oerrors.now = data->ifi_oerrors;
+                        _updateValue(&(L->ibytes), data->ifi_ibytes);
+                        _updateValue(&(L->ipackets), data->ifi_ipackets);
+                        _updateValue(&(L->ierrors), data->ifi_ierrors);
+                        _updateValue(&(L->obytes), data->ifi_obytes);
+                        _updateValue(&(L->opackets), data->ifi_opackets);
+                        _updateValue(&(L->oerrors), data->ifi_oerrors);
                         return true;
                 }
         }

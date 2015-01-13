@@ -43,73 +43,147 @@ static boolean_t _update(T L, const char *interface) {
         snprintf(path, sizeof(path), "/sys/class/net/%s/operstate", interface);
         FILE *f = fopen(path, "r");
         if (f) {
-                if (fscanf(f, "%256s\n", buf) == 1) {
-                        L->state = Str_isEqual(buf, "down") ? 0LL : 1LL;
+                if (fscanf(f, "%256s\n", buf) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
                 }
+                L->state = Str_isEqual(buf, "down") ? 0LL : 1LL;
                 fclose(f);
+        } else {
+                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
         /*
-         * Get interface speed (Optional: may not be present on older kernels).
+         * Get interface speed (Optional: may not be present on older kernels and readable for pseudo interface types).
          * $ cat /sys/class/net/eth0/speed
          * 1000
          */
         snprintf(path, sizeof(path), "/sys/class/net/%s/speed", interface);
         f = fopen(path, "r");
         if (f) {
-                int speed;
-                if (fscanf(f, "%d\n", &speed) == 1) {
-                        L->speed = speed * 1000000; // mbps -> bps
-                }
+                if (fscanf(f, "%lld\n", &(L->speed)) == 1)
+                        L->speed *= 1000000; // mbps -> bps
+                else
+                        L->speed = -1LL;
                 fclose(f);
         }
         /*
-         * Get interface full/half duplex status (Optional: may not be present on older kernels).
+         * Get interface full/half duplex status (Optional: may not be present on older kernels and readable for pseudo interface types).
          * $ cat /sys/class/net/eth0/duplex
          * full
          */
         snprintf(path, sizeof(path), "/sys/class/net/%s/duplex", interface);
         f = fopen(path, "r");
         if (f) {
-                if (fscanf(f, "%256s\n", buf) == 1) {
+                if (fscanf(f, "%256s\n", buf) == 1)
                         L->duplex = Str_isEqual(buf, "full") ? 1LL : 0LL;
-                }
+                else
+                        L->duplex = -1;
                 fclose(f);
         }
         /*
-         * $ cat /proc/net/dev
-         * Inter-|   Receive                                                |  Transmit
-         *  face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
-         *   eth0: 1841444   11557    0    0    0     0          0         0  1335636    7725    0    0    0     0       0          0
-         *     lo:   28760     200    0    0    0     0          0         0    28760     200    0    0    0     0       0          0
+         * $ cat /sys/class/net/eth0/statistics/rx_bytes 
+         * 239426
          */
-        f = fopen("/proc/net/dev", "r");
+        snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_bytes", interface);
+        f = fopen(path, "r");
         if (f) {
-                long long ibytes, ipackets, ierrors, obytes, opackets, oerrors;
-                while (fgets(buf, sizeof(buf), f) != NULL) {
-                        char iface[STRLEN];
-                        if (sscanf(buf, "%256[^:]: %lld %lld %lld %*s %*s %*s %*s %*s %lld %lld %lld %*s %*s %*s %*s %*s", iface, &ibytes, &ipackets, &ierrors, &obytes, &opackets, &oerrors) == 7 && Str_isEqual(Str_trim(iface), interface)) {
-                                L->timestamp.last = L->timestamp.now;
-                                L->timestamp.now = Time_milli();
-                                L->ipackets.last = L->ipackets.now;
-                                L->ipackets.now = ipackets;
-                                L->ibytes.last = L->ibytes.now;
-                                L->ibytes.now = ibytes;
-                                L->ierrors.last = L->ierrors.now;
-                                L->ierrors.now = ierrors;
-                                L->opackets.last = L->opackets.now;
-                                L->opackets.now = opackets;
-                                L->obytes.last = L->obytes.now;
-                                L->obytes.now = obytes;
-                                L->oerrors.last = L->oerrors.now;
-                                L->oerrors.now = oerrors;
-                                fclose(f);
-                                return true;
-                        }
+                long long ibytes;
+                if (fscanf(f, "%lld\n", &ibytes) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
                 }
+                _updateValue(&(L->ibytes), ibytes);
                 fclose(f);
         } else {
-                THROW(AssertException, "Cannot read /proc/net/dev -- %s", System_getError(errno));
+                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
         }
-        return false;
+        /*
+         * $ cat /sys/class/net/eth0/statistics/rx_packets 
+         * 2706
+         */
+        snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_packets", interface);
+        f = fopen(path, "r");
+        if (f) {
+                long long ipackets;
+                if (fscanf(f, "%lld\n", &ipackets) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
+                _updateValue(&(L->ipackets), ipackets);
+                fclose(f);
+        } else {
+                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
+        }
+        /*
+         * $ cat /sys/class/net/eth0/statistics/rx_errors 
+         * 0
+         */
+        snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/rx_errors", interface);
+        f = fopen(path, "r");
+        if (f) {
+                long long ierrors;
+                if (fscanf(f, "%lld\n", &ierrors) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
+                _updateValue(&(L->ierrors), ierrors);
+                fclose(f);
+        } else {
+                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
+        }
+        /*
+         * $ cat /sys/class/net/eth0/statistics/tx_bytes 
+         * 410775
+         */
+        snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_bytes", interface);
+        f = fopen(path, "r");
+        if (f) {
+                long long obytes;
+                if (fscanf(f, "%lld\n", &obytes) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
+                _updateValue(&(L->obytes), obytes);
+                fclose(f);
+        } else {
+                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
+        }
+        /*
+         * $ cat /sys/class/net/eth0/statistics/tx_packets 
+         * 1649
+         */
+        snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_packets", interface);
+        f = fopen(path, "r");
+        if (f) {
+                long long opackets;
+                if (fscanf(f, "%lld\n", &opackets) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
+                _updateValue(&(L->opackets), opackets);
+                fclose(f);
+        } else {
+                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
+        }
+        /*
+         * $ cat /sys/class/net/eth0/statistics/tx_errors  
+         * 0
+         */
+        snprintf(path, sizeof(path), "/sys/class/net/%s/statistics/tx_errors", interface);
+        f = fopen(path, "r");
+        if (f) {
+                long long oerrors;
+                if (fscanf(f, "%lld\n", &oerrors) != 1) {
+                        fclose(f);
+                        THROW(AssertException, "Cannot parse %s -- %s", path, System_getError(errno));
+                }
+                _updateValue(&(L->oerrors), oerrors);
+                fclose(f);
+        } else {
+                THROW(AssertException, "Cannot read %s -- %s", path, System_getError(errno));
+        }
+        L->timestamp.last = L->timestamp.now;
+        L->timestamp.now = Time_milli();
+        return true;
 }
 
