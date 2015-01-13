@@ -126,6 +126,15 @@ AC_CHECK_HEADERS([ \
         ])
 
 # ------------------------------------------------------------------------
+# Types
+# ------------------------------------------------------------------------
+
+AC_CHECK_TYPES([boolean_t], [], [], [[#include <mach/boolean.h>]])
+AC_CHECK_TYPES([uchar_t])
+AC_CHECK_TYPES([uint32_t])
+
+
+# ------------------------------------------------------------------------
 # Functions 
 # ------------------------------------------------------------------------
 
@@ -149,7 +158,6 @@ AC_CACHE_CHECK([vsnprintf is c99 conformant],
                         [AC_MSG_RESULT(yes)],
                         [AC_MSG_FAILURE([vsnprintf does not conform to c99])],
                         [AC_MSG_ERROR(cross-compiling: please set 'libmonit_cv_vsnprintf_c99_conformant=[yes|no]')])])
-
 
 # ------------------------------------------------------------------------
 # Architecture/OS
@@ -228,7 +236,6 @@ if test "x$GCC" = "xyes"; then
         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
 fi
 
-
 # ------------------------------------------------------------------------
 # Atomic support
 # ------------------------------------------------------------------------
@@ -280,11 +287,6 @@ AC_MSG_RESULT($ac_cv_ipv6)
 if test $ac_cv_ipv6 = yes ; then
 	AC_DEFINE([IPV6], 1, [Define to 1 if the system supports IPv6])
 fi
-
-# ---------------------------------------------------------------------------
-# Functions 
-# ---------------------------------------------------------------------------
-
 
 # ---------------------------------------------------------------------------
 # Outputs

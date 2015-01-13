@@ -337,9 +337,9 @@
 		52D7964813A6CE560014CED2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				52D7964C13A6CE560014CED2 /* Config.h */,
 				52D7964A13A6CE560014CED2 /* Bootstrap.c */,
 				52D7964B13A6CE560014CED2 /* Bootstrap.h */,
-				52D7964C13A6CE560014CED2 /* Config.h */,
 				52D7964D13A6CE560014CED2 /* exceptions */,
 				52D7965713A6CE560014CED2 /* io */,
 				52D7966213A6CE560014CED2 /* system */,
