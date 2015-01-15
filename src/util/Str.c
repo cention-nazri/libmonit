@@ -53,14 +53,6 @@
  */
 
 
-/* ----------------------------------------------------------- Definitions */
-
-
-static const char *kSizeNotation[9] = {
-        "B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", NULL
-};
-
-
 /* -------------------------------------------------------- Public Methods */
 
 
@@ -241,7 +233,7 @@ int Str_has(const char *charset, const char *s) {
 
 char *Str_unescape(const char *charset, char *s) {
         if (charset && STR_DEF(s)) {
-                register int x, y;
+                int x, y;
                 for (x = 0, y = 0; s[y]; x++, y++) {
                         if ((s[x] = s[y]) == '\\')
                                 for (int i = 0; charset[i]; i++) {
@@ -431,12 +423,13 @@ int Str_cmp(const void *x, const void *y) {
 char *Str_bytesToSize(double bytes, char s[10]) {
         assert(s);
         assert(bytes < 1e+24);
+        static const char *kNotation[] = {"B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", NULL};
         *s = 0;
-        for (int i = 0; kSizeNotation[i]; i++) {
+        for (int i = 0; kNotation[i]; i++) {
                 if (bytes > 1024) {
                         bytes /= 1024;
                 } else {
-                        snprintf(s, 10, "%.1lf %s", bytes, kSizeNotation[i]);
+                        snprintf(s, 10, "%.1lf %s", bytes, kNotation[i]);
                         break;
                 }
         }

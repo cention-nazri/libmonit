@@ -224,7 +224,7 @@ int Str_has(const char *charset, const char *s);
  * </pre>
  * @param charset The characters to test <code>s</code> against. 
  * A character is unescaped in <code>s</code> if it is in the 
- * charset and is preceeded with '\'.
+ * charset and is preceded with '\'.
  * @param s The string to unescape
  * @return A pointer to s
  */

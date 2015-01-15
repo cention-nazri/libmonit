@@ -411,7 +411,11 @@ int main(void) {
         printf("=> Test24: Str_unescape\n");
         {
                 char s[] = "foo\\'ba\\`r\\}baz";
+                char t[] = "\\&gt\\;";
                 assert(Str_isEqual("foo'ba`r\\}baz", Str_unescape("`'", s)));
+                assert(Str_isEqual(s, Str_unescape("@*", s)));
+                assert(Str_isEqual(Str_unescape("&;", t), "&gt;"));
+                assert(Str_unescape("@*!#$%&/(=", NULL) == NULL);
         }
         printf("=> Test24: OK\n\n");
 
