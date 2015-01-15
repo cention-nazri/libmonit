@@ -408,6 +408,12 @@ int main(void) {
         }
         printf("=> Test23: OK\n\n");
 
+        printf("=> Test24: Str_unescape\n");
+        {
+                char s[] = "foo\\'ba\\`r\\}baz";
+                assert(Str_isEqual("foo'ba`r\\}baz", Str_unescape("`'", s)));
+        }
+        printf("=> Test24: OK\n\n");
 
         printf("============> Str Tests: OK\n\n");
         return 0;

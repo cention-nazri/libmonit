@@ -239,8 +239,27 @@ int Str_has(const char *charset, const char *s) {
 }
 
 
+char *Str_unescape(const char *charset, char *s) {
+        if (charset && STR_DEF(s)) {
+                register int x, y;
+                for (x = 0, y = 0; s[y]; x++, y++) {
+                        if ((s[x] = s[y]) == '\\')
+                                for (int i = 0; charset[i]; i++) {
+                                        if (charset[i] == s[y + 1]) {
+                                                s[x] = charset[i];
+                                                y++;
+                                                break;
+                                        }
+                                }
+                }
+                s[x] = 0;
+        }
+        return s;
+}
+
+
 int Str_isEqual(const char *a, const char *b) {
-        if (a && b) { 
+        if (a && b) {
                 while (*a && *b)
                         if (toupper(*a++) != toupper(*b++)) return false;
                 return (*a == *b);
