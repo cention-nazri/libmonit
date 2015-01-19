@@ -184,8 +184,7 @@ int main(void) {
         printf("=> Test12: startsWith\n");
         {
                 char *a = "mysql://localhost:3306/zild?user=root&password=swordfish";
-                printf("\tResult: starts with mysql - %s\n", 
-                       Str_startsWith(a, "mysql")?"yes":"no");
+                printf("\tResult: starts with mysql - %s\n", Str_startsWith(a, "mysql") ? "yes" : "no");
                 assert(Str_startsWith(a, "mysql"));
                 assert(!Str_startsWith(a, "sqlite"));
                 assert(Str_startsWith("sqlite", "sqlite"));
@@ -203,7 +202,7 @@ int main(void) {
         printf("=> Test13: endsWith\n");
         {
                 char *a = "mysql://localhost:3306";
-                printf("\tResult: ends with 3306 - %s\n", Str_endsWith(a, "3306")?"yes":"no");
+                printf("\tResult: ends with 3306 - %s\n", Str_endsWith(a, "3306") ? "yes" : "no");
                 assert(Str_endsWith(a, "3306"));
                 assert(!Str_endsWith(a, "sqlite"));
                 assert(Str_endsWith("sqlite", "sqlite"));
@@ -221,7 +220,7 @@ int main(void) {
         printf("=> Test14: isEqual\n");
         {
                 char *a = "mysql://localhost:3306";
-                printf("\tResult: is equal - %s\n", Str_isEqual(a, "mysql://localhost:3306")?"yes":"no");
+                printf("\tResult: is equal - %s\n", Str_isEqual(a, "mysql://localhost:3306") ? "yes" : "no");
                 assert(Str_isEqual("sqlite", "sqlite"));
                 printf("\tTesting for NULL and NUL argument\n");
                 assert(!Str_isEqual(a, NULL));
