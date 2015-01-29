@@ -197,7 +197,7 @@ static unsigned long long _deltaMinute(T L, LinkData_T *data, int count) {
         assert(count <= 60);
         int stop = Time_minutes(L->timestamp.now / 1000.);
         int delta = stop - count;
-        int start = delta < 0 ? 60 + delta + 1 : delta;
+        int start = delta < 0 ? 60 + delta : delta;
         return data->minute[stop] - data->minute[start];
 }
 
@@ -207,7 +207,7 @@ static unsigned long long _deltaHour(T L, LinkData_T *data, int count) {
         assert(count <= 24);
         int stop = Time_hour(L->timestamp.now / 1000.);
         int delta = stop - count;
-        int start = delta < 0 ? 24 + delta + 1 : delta;
+        int start = delta < 0 ? 24 + delta : delta;
         return data->hour[stop] - data->hour[start];
 }
 
