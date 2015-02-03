@@ -52,13 +52,20 @@
 
 #define T List_T
 typedef struct T *T;
+
+
 /** @cond hide */
-typedef struct list_t {void *e; struct list_t *next;} *list_t;
+typedef struct list_t {
+        void *e;
+        struct list_t *next;
+} __attribute__((__packed__)) *list_t;
+
+
 struct T {
         int length;
         int timestamp;
         list_t  head, tail, freelist;
-};
+} __attribute__((__packed__));
 /** @endcond */
 
 

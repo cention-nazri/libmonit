@@ -68,7 +68,7 @@ struct T {
         char **_env;
         char **_args;
         char *working_directory;
-};
+} __attribute__((__packed__));
 
 
 struct Process_T {
@@ -83,7 +83,7 @@ struct Process_T {
         InputStream_T err;
         OutputStream_T out;
         char *working_directory;
-};
+} __attribute__((__packed__));
 
 
 /* --------------------------------------------------------------- Private */

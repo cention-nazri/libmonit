@@ -84,7 +84,7 @@
 static struct {
         struct ifaddrs *addrs;
         time_t timestamp;
-} _stats = {};
+} __attribute__((__packed__)) _stats = {};
 
 
 typedef struct LinkData_T {
@@ -95,7 +95,7 @@ typedef struct LinkData_T {
         unsigned long long now;
         unsigned long long minute[60];
         unsigned long long hour[24];
-} LinkData_T;
+} __attribute__((__packed__)) LinkData_T;
 
 
 struct T {
@@ -114,7 +114,7 @@ struct T {
         LinkData_T opackets;  // Packets sent on interface
         LinkData_T oerrors;   // Output errors on interface
         LinkData_T obytes;    // Total number of octets sent
-};
+} __attribute__((__packed__));
 
 
 /* ----------------------------------------------------- Static destructor */

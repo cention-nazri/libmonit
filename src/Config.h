@@ -116,7 +116,10 @@ typedef unsigned int uint32_t;
  * The internal boolean integer type
  */
 #ifndef HAVE_BOOLEAN_T
-typedef enum {false=0, true} boolean_t;
+typedef enum {
+        false = 0,
+        true
+} __attribute__((__packed__)) boolean_t;
 #else
 #define false 0
 #define true  1
