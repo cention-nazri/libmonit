@@ -94,9 +94,9 @@ AC_CHECK_HEADERS([ctype.h errno.h fcntl.h limits.h pthread.h setjmp.h \
                   sys/socket.h sys/time.h sys/types.h unistd.h execinfo.h \
                   sys/sendfile.h sys/dirent.h poll.h sys/poll.h sys/event.h \
                   stropts.h sys/ioctl.h sys/filio.h kstat.h ifaddrs.h \
-                  net/if_media.h netinet/in.h sys/sysctl.h net/route.h net/if_dl.h \
+                  net/if_media.h netinet/in.h sys/sysctl.h net/if_dl.h \
                   mach/boolean.h uvm/uvm_param.h])
-AC_CHECK_HEADERS([net/if.h], [], [],
+AC_CHECK_HEADERS([net/if.h net/route.h], [], [],
         [
          #ifdef HAVE_SYS_TYPES_H
          #include <sys/types.h>
