@@ -129,7 +129,15 @@ AC_CHECK_HEADERS([ \
 # Types
 # ------------------------------------------------------------------------
 
-AC_CHECK_TYPES([boolean_t], [], [], [[#include <mach/boolean.h>]])
+AC_CHECK_TYPES([boolean_t], [], [],
+        [
+         #ifdef HAVE_MACH_BOOLEAN_H
+         #include <mach/boolean.h>
+         #endif
+         #ifdef HAVE_UVM_UVM_PARAM_H
+         #include <uvm/uvm_param.h>
+         #endif
+        ])
 AC_CHECK_TYPES([uchar_t])
 AC_CHECK_TYPES([uint32_t])
 
