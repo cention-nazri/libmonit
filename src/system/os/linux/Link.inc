@@ -56,11 +56,14 @@ static boolean_t _update(T L, const char *interface) {
          * Get interface speed (Optional: may not be present on older kernels and readable for pseudo interface types).
          * $ cat /sys/class/net/eth0/speed
          * 1000
+         * If the link is down the file either doesn't exist or contains UINT_MAX (depends on kernel version):
+         * $ cat /sys/class/net/eth0/speed
+         * 4294967295
          */
         snprintf(path, sizeof(path), "/sys/class/net/%s/speed", interface);
         f = fopen(path, "r");
         if (f) {
-                if (fscanf(f, "%lld\n", &(L->speed)) == 1)
+                if (fscanf(f, "%lld\n", &(L->speed)) == 1 && L->speed != UINT_MAX)
                         L->speed *= 1000000; // mbps -> bps
                 else
                         L->speed = -1LL;
@@ -70,11 +73,14 @@ static boolean_t _update(T L, const char *interface) {
          * Get interface full/half duplex status (Optional: may not be present on older kernels and readable for pseudo interface types).
          * $ cat /sys/class/net/eth0/duplex
          * full
+         * If the link is down the file either doesn't exist or contains "unknown" value (depends on kernel version):
+         * $ cat /sys/class/net/eth0/duplex
+         * unknown
          */
         snprintf(path, sizeof(path), "/sys/class/net/%s/duplex", interface);
         f = fopen(path, "r");
         if (f) {
-                if (fscanf(f, "%256s\n", buf) == 1)
+                if (fscanf(f, "%256s\n", buf) == 1 && ! Str_isEqual(buf, "unknown"))
                         L->duplex = Str_isEqual(buf, "full") ? 1LL : 0LL;
                 else
                         L->duplex = -1;
