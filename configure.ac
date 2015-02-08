@@ -131,6 +131,9 @@ AC_CHECK_HEADERS([ \
 
 AC_CHECK_TYPES([boolean_t], [], [],
         [
+         #ifdef HAVE_SYS_TYPES_H
+         #include <sys/types.h>
+         #endif
          #ifdef HAVE_MACH_BOOLEAN_H
          #include <mach/boolean.h>
          #endif
