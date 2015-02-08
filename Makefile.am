@@ -12,6 +12,15 @@ AM_CPPFLAGS     = $(CPPFLAGS) $(DBCPPFLAGS) -I./src -I./src/exceptions -I./src/i
 # libmonit is built static
 noinst_LTLIBRARIES = libmonit.la
 
+EXTRA_libmonit_la_DEPENDENCIES = \
+                  src/system/os/aix/Link.inc \
+                  src/system/os/freebsd/Link.inc \
+                  src/system/os/linux/Link.inc \
+                  src/system/os/macosx/Link.inc \
+                  src/system/os/netbsd/Link.inc \
+                  src/system/os/openbsd/Link.inc \
+                  src/system/os/solaris/Link.inc
+
 libmonit_la_SOURCES = \
 		  src/Bootstrap.c \
                   src/exceptions/assert.c \
