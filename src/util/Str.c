@@ -426,10 +426,12 @@ char *Str_bytesToSize(double bytes, char s[10]) {
         static const char *kNotation[] = {"B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", NULL};
         *s = 0;
         for (int i = 0; kNotation[i]; i++) {
-                if (bytes > 1024)
+                if (bytes > 1024) {
                         bytes /= 1024;
-                else
+                } else {
                         snprintf(s, 10, i == 0 ? "%.0lf %s" : "%.1lf %s", bytes, kNotation[i]);
+                        break;
+                }
         }
         return s;
 }
