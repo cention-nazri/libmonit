@@ -61,7 +61,7 @@ struct T {
         time_t timeout;
         boolean_t isclosed;
         uchar_t buffer[BUFFER_SIZE];
-} __attribute__((__packed__));
+};
 
 
 /* --------------------------------------------------------------- Private */

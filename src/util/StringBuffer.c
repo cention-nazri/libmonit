@@ -51,7 +51,7 @@ struct T {
         int used;
         int length;
 	uchar_t *buffer;
-} __attribute__((__packed__));
+};
 
 
 /* ---------------------------------------------------------------- Private */

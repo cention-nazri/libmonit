@@ -58,14 +58,14 @@ typedef struct T *T;
 typedef struct list_t {
         void *e;
         struct list_t *next;
-} __attribute__((__packed__)) *list_t;
+} *list_t;
 
 
 struct T {
         int length;
         int timestamp;
         list_t  head, tail, freelist;
-} __attribute__((__packed__));
+};
 /** @endcond */
 
 

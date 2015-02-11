@@ -66,7 +66,7 @@ struct T {
         int sessionWritten;
         long long int bytesWritten;
         uchar_t buffer[BUFFER_SIZE + 1];
-} __attribute__((__packed__));
+};
 
 
 typedef struct va_list_box {

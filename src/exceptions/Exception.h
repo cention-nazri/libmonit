@@ -191,7 +191,7 @@ struct Exception_Frame {
 	const T *exception;
 	Exception_Frame *prev;
         char message[EXCEPTION_MESSAGE_LENGTH + 1];
-} __attribute__((__packed__));
+};
 enum {
         Exception_entered = 0,
         Exception_thrown,
