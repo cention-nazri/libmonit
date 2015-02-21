@@ -321,7 +321,7 @@ unsigned long long Link_getErrorsOutTotal(T L);
 /**
  * Get interface state.
  * @param L A Link object
- * @return Interface state (0 = down, 1 = up)
+ * @return Interface state (-1 = N/A, 0 = down, 1 = up)
  */
 int Link_getState(T L);
 

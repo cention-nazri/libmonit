@@ -105,8 +105,8 @@ struct T {
                 unsigned long long last;
                 unsigned long long now;
         } timestamp;
-        int state;       // State (0 = down, 1 = up)
-        int duplex;      // Duplex (0 = half, 1 = full)
+        int state;       // State (-1 = N/A, 0 = down, 1 = up)
+        int duplex;      // Duplex (-1 = N/A, 0 = half, 1 = full)
         long long speed; // Speed [bps]
         LinkData_T ipackets;  // Packets received on interface
         LinkData_T ierrors;   // Input errors on interface
