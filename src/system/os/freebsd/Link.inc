@@ -65,7 +65,7 @@ static boolean_t _update(T L, const char *interface) {
                         L->speed = data->ifi_baudrate;
                         _updateValue(&(L->ibytes), data->ifi_ibytes);
                         _updateValue(&(L->ipackets), data->ifi_ipackets);
-                        _updateValue(&(L->ierrors), L->ierrors.now);
+                        _updateValue(&(L->ierrors), data->ifi_ierrors);
                         _updateValue(&(L->obytes), data->ifi_obytes);
                         _updateValue(&(L->opackets), data->ifi_opackets);
                         _updateValue(&(L->oerrors), data->ifi_oerrors);
