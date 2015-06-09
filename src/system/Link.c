@@ -105,8 +105,8 @@ struct T {
                 unsigned long long last;
                 unsigned long long now;
         } timestamp;
-        int state;       // State (0 = down, 1 = up)
-        int duplex;      // Duplex (0 = half, 1 = full)
+        int state;       // State (-1 = N/A, 0 = down, 1 = up)
+        int duplex;      // Duplex (-1 = N/A, 0 = half, 1 = full)
         long long speed; // Speed [bps]
         LinkData_T ipackets;  // Packets received on interface
         LinkData_T ierrors;   // Input errors on interface
@@ -135,7 +135,7 @@ static void _updateValue(LinkData_T *data, unsigned long long raw) {
        unsigned long long value = raw;
 #ifndef __LP64__
         if (raw < data->raw)
-                value = data->now + 4294967296ULL - data->raw + raw; // Counter wrapped
+                value = data->now + ULONG_MAX + 1ULL - data->raw + raw; // Counter wrapped
         else
                 value = data->now + raw - data->raw; 
        data->raw = raw;
@@ -163,6 +163,9 @@ static void _updateValue(LinkData_T *data, unsigned long long raw) {
 
 
 static void _resetData(LinkData_T *data, unsigned long long value) {
+#ifndef __LP64__
+        data->raw = value;
+#endif
         data->last = data->now = value;
         for (int i = 0; i < 60; i++)
                 data->minute[i] = value;
@@ -193,21 +196,25 @@ static unsigned long long _deltaSecond(T L, LinkData_T *data) {
 
 
 static unsigned long long _deltaMinute(T L, LinkData_T *data, int count) {
-        assert(count > 0);
-        assert(count <= 60);
         int stop = Time_minutes(L->timestamp.now / 1000.);
         int delta = stop - count;
-        int start = delta < 0 ? 60 + delta + 1 : delta;
+        int start = delta < 0 ? 60 + delta : delta;
+        if (start == stop) // count == 60 (wrap)
+                start = start < 59 ? start + 1 : 0;
+        assert(start >= 0 && start < 60);
+        assert(stop >= 0 && stop < 60);
         return data->minute[stop] - data->minute[start];
 }
 
 
 static unsigned long long _deltaHour(T L, LinkData_T *data, int count) {
-        assert(count > 0);
-        assert(count <= 24);
         int stop = Time_hour(L->timestamp.now / 1000.);
         int delta = stop - count;
-        int start = delta < 0 ? 24 + delta + 1 : delta;
+        int start = delta < 0 ? 24 + delta : delta;
+        if (start == stop) // count == 24 (wrap)
+                start = start < 23 ? start + 1 : 0;
+        assert(start >= 0 && start < 24);
+        assert(stop >= 0 && stop < 24);
         return data->hour[stop] - data->hour[start];
 }
 
@@ -226,7 +233,7 @@ static const char *_findInterfaceForAddress(const char *address) {
                 else
                         continue;
                 if (s != 0)
-                        THROW(AssertException, "Cannot translate address to name -- %s", gai_strerror(s));
+                        THROW(AssertException, "Cannot translate address to interface -- %s", gai_strerror(s));
                 if (Str_isEqual(address, host))
                         return a->ifa_name;
         }

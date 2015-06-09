@@ -429,7 +429,7 @@ char *Str_bytesToSize(double bytes, char s[10]) {
                 if (bytes > 1024) {
                         bytes /= 1024;
                 } else {
-                        snprintf(s, 10, "%.1lf %s", bytes, kNotation[i]);
+                        snprintf(s, 10, i == 0 ? "%.0lf %s" : "%.1lf %s", bytes, kNotation[i]);
                         break;
                 }
         }

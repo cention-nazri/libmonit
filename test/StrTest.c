@@ -391,7 +391,7 @@ int main(void) {
         {
                 char str[10];
                 Str_bytesToSize(0, str);
-                assert(Str_isEqual(str, "0.0 B"));
+                assert(Str_isEqual(str, "0 B"));
                 Str_bytesToSize(2048, str);
                 assert(Str_isEqual(str, "2.0 KB"));
                 Str_bytesToSize(2097152, str);
