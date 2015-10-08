@@ -31,6 +31,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <unistd.h>
 
 #include "Str.h"
