@@ -32,7 +32,10 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 #include <stdlib.h>
+#include <pwd.h>
+#include <grp.h>
 
 #include "Str.h"
 #include "Dir.h"
@@ -502,18 +505,31 @@ Process_T Command_execute(T C) {
                                 _exit(errno);
                         }
                 }
-                if (C->gid)
-                        P->gid = (setgid(C->gid) != 0)
-                        ? ERROR("Command: Cannot change process gid to '%d' -- %s\n", C->gid, System_getLastError()), getgid()
-                        : C->gid;
-                else
-                        P->gid = getgid();
-                if (C->uid)
-                        P->uid = (setuid(C->uid) != 0)
-                        ? ERROR("Command: Cannot change process uid to '%d' -- %s\n", C->uid, System_getLastError()), getuid()
-                        : C->uid;
-                else
-                        P->uid = getuid();
+                P->gid = getgid();
+                if (C->gid) {
+                        if (setgid(C->gid) == 0) {
+                                P->gid = C->gid;
+                        } else {
+                                ERROR("Command: Cannot change process gid to '%d' -- %s\n", C->gid, System_getLastError());
+                        }
+                }
+                P->uid = getuid();
+                if (C->uid) {
+                        struct passwd *user = getpwuid(C->uid);
+                        if (user) {
+                                if (initgroups(user->pw_name, P->gid) == 0) {
+                                        if (setuid(C->uid) == 0) {
+                                                P->uid = C->uid;
+                                        } else {
+                                                ERROR("Command: Cannot change process uid to '%d' -- %s\n", C->uid, System_getLastError());
+                                        }
+                                } else {
+                                        ERROR("Command: initgroups for user %s failed -- %s\n", user->pw_name, System_getLastError());
+                                }
+                        } else {
+                                ERROR("Command: uid %d not found on the system -- %s\n", C->uid, System_getLastError());
+                        }
+                }
                 setsid(); // Loose controlling terminal
                 _setupChildPipes(P);
                 // Close all descriptors except stdio
